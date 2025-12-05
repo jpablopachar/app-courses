@@ -1,1 +1,7 @@
-<Solution />
+<Solution>
+  <Project Path="Application/Application.csproj" Id="85bf2657-dcf8-489d-adae-dfb33ea8350f" />
+  <Project Path="Domain/Domain.csproj" Id="c8139ca3-f0c7-4c08-b806-f9a24ad6c8f7" />
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="978561d7-fcf6-49d9-a9fa-70c5e8c672b0" />
+  <Project Path="Persistence/Persistence.csproj" Id="b3cffa8b-e662-4548-b440-49024ec047d9" />
+  <Project Path="WebApi/WebApi.csproj" Id="d2d7dccf-92a0-47fe-b7f9-2eafe4a2ac7e" />
+</Solution>
