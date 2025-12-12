@@ -21,5 +21,10 @@ namespace Domain
         /// Gets or sets the unique identifier of the associated course.
         /// </summary>
         public Guid? CourseId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the course associated with this qualification.
+        /// </summary>
+        public Course? Course { get; set; }
     }
 }
