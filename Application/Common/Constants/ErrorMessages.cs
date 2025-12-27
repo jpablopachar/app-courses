@@ -29,5 +29,10 @@ namespace Application.Common.Constants
         /// Error message when user registration fails.
         /// </summary>
         public const string RegistrationFailed = "Failed to register user";
+
+        /// <summary>
+        /// Error message when validation fails.
+        /// </summary>
+        public const string ValidationFailed = "One or more validation errors occurred.";
     }
 }
