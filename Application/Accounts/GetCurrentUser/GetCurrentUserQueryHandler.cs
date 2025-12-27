@@ -1,3 +1,4 @@
+using Application.Common.Constants;
 using Application.Core;
 using Application.Interfaces;
 using MediatR;
@@ -30,7 +31,7 @@ namespace Application.Accounts.GetCurrentUser
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == request.GetCurrentUserRequest.Email, cancellationToken);
 
-            if (user is null) return Result<Profile>.Failure("User not found");
+            if (user is null) return Result<Profile>.Failure(ErrorMessages.UserNotFound);
 
             var profile = await _profileBuilderService.BuildProfileAsync(user);
 

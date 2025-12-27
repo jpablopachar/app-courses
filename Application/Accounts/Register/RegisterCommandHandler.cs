@@ -1,3 +1,4 @@
+using Application.Common.Constants;
 using Application.Core;
 using Application.Interfaces;
 using MediatR;
@@ -37,10 +38,10 @@ namespace Application.Accounts.Register
             {
                 if (existingUser.Email == request.RegisterRequest.Email)
                 {
-                    return Result<Profile>.Failure("Email is already taken");
+                    return Result<Profile>.Failure(ErrorMessages.EmailTaken);
                 }
 
-                return Result<Profile>.Failure("Username is already taken");
+                return Result<Profile>.Failure(ErrorMessages.UsernameTaken);
             }
 
 
@@ -57,7 +58,7 @@ namespace Application.Accounts.Register
 
             if (!result.Succeeded)
             {
-                return Result<Profile>.Failure("Failed to register user");
+                return Result<Profile>.Failure(ErrorMessages.RegistrationFailed);
             }
 
             var profile = await _profileBuilderService.BuildProfileAsync(user);

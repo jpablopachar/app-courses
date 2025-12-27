@@ -1,3 +1,4 @@
+using Application.Common.Constants;
 using Application.Core;
 using Application.Interfaces;
 using MediatR;
@@ -33,12 +34,11 @@ namespace Application.Accounts.Login
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == request.LoginRequest.Email, cancellationToken);
 
-            if (user is null) return Result<Profile>.Failure("User not found");
+            if (user is null) return Result<Profile>.Failure(ErrorMessages.UserNotFound);
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, request.LoginRequest.Password!);
 
-            if (!passwordValid) return Result<Profile>.Failure("Invalid email or password");
-
+            if (!passwordValid) return Result<Profile>.Failure(ErrorMessages.InvalidCredentials);
             var profile = await _profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
