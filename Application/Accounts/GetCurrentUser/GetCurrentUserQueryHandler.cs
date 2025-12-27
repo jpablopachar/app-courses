@@ -14,11 +14,11 @@ namespace Application.Accounts.GetCurrentUser
     /// Uses UserManager to retrieve user data and ITokenService to generate a JWT token.
     /// </remarks>
     /// <param name="userManager">The UserManager instance for accessing user data.</param>
-    /// <param name="tokenService">The token service for generating JWT tokens.</param>
-    public class GetCurrentUserQueryHandler(UserManager<AppUser> userManager, ITokenService tokenService) : IRequestHandler<GetCurrentUserQuery, Result<Profile>>
+    /// <param name="profileBuilderService">The profile builder service for creating user profiles.</param>
+    public class GetCurrentUserQueryHandler(UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService) : IRequestHandler<GetCurrentUserQuery, Result<Profile>>
     {
         private readonly UserManager<AppUser> _userManager = userManager;
-        private readonly ITokenService _tokenService = tokenService;
+        private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
 
         /// <summary>
         /// Handles the GetCurrentUserQuery request and returns the user's profile.
@@ -32,13 +32,7 @@ namespace Application.Accounts.GetCurrentUser
 
             if (user is null) return Result<Profile>.Failure("User not found");
 
-            var profile = new Profile
-            {
-                FullName = user.FullName,
-                Email = user.Email,
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user)
-            };
+            var profile = await _profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
         }

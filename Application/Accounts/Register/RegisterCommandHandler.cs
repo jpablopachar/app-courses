@@ -16,11 +16,11 @@ namespace Application.Accounts.Register
     /// This handler uses <see cref="UserManager{AppUser}"/> to manage user creation and <see cref="ITokenService"/> to generate tokens.
     /// </remarks>
     /// <param name="userManager">The user manager for handling user-related operations.</param>
-    /// <param name="tokenService">The token service for generating authentication tokens.</param>
-    public class RegisterCommandHandler(UserManager<AppUser> userManager, ITokenService tokenService) : IRequestHandler<RegisterCommand, Result<Profile>>
+    /// <param name="profileBuilderService">The profile builder service for creating user profiles.</param>
+    public class RegisterCommandHandler(UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService) : IRequestHandler<RegisterCommand, Result<Profile>>
     {
         private readonly UserManager<AppUser> _userManager = userManager;
-        private readonly ITokenService _tokenService = tokenService;
+        private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
 
         /// <summary>
         /// Handles the registration of a new user by validating email and username uniqueness, creating the user,
@@ -31,15 +31,18 @@ namespace Application.Accounts.Register
         /// <returns>A <see cref="Result{Profile}"/> containing the user's profile and token if successful, or an error message if registration fails.</returns>
         public async Task<Result<Profile>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            if (await _userManager.Users.AnyAsync(x => x.Email == request.RegisterRequest.Email, cancellationToken))
-            {
-                return Result<Profile>.Failure("Email is already taken");
-            }
+            var existingUser = await _userManager.Users.Where(u => u.Email == request.RegisterRequest.Email || u.UserName == request.RegisterRequest.Username).Select(u => new { u.Email, u.UserName }).FirstOrDefaultAsync(cancellationToken);
 
-            if (await _userManager.Users.AnyAsync(x => x.UserName == request.RegisterRequest.Username, cancellationToken))
+            if (existingUser != null)
             {
+                if (existingUser.Email == request.RegisterRequest.Email)
+                {
+                    return Result<Profile>.Failure("Email is already taken");
+                }
+
                 return Result<Profile>.Failure("Username is already taken");
             }
+
 
             var user = new AppUser
             {
@@ -57,13 +60,7 @@ namespace Application.Accounts.Register
                 return Result<Profile>.Failure("Failed to register user");
             }
 
-            var profile = new Profile
-            {
-                FullName = user.FullName,
-                Email = user.Email,
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user)
-            };
+            var profile = await _profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
         }

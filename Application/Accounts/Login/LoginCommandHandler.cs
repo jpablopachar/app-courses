@@ -17,11 +17,11 @@ namespace Application.Accounts.Login
     /// Initializes a new instance of the <see cref="LoginCommandHandler"/> class.
     /// </remarks>
     /// <param name="userManager">The user manager for handling user operations.</param>
-    /// <param name="tokenService">The token service for generating JWT tokens.</param>
-    public class LoginCommandHandler(UserManager<AppUser> userManager, ITokenService tokenService) : IRequestHandler<LoginCommand, Result<Profile>>
+    /// <param name="profileBuilderService">The profile builder service for creating user profiles.</param>
+    public class LoginCommandHandler(UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService) : IRequestHandler<LoginCommand, Result<Profile>>
     {
         private readonly UserManager<AppUser> _userManager = userManager;
-        private readonly ITokenService _tokenService = tokenService;
+        private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
 
         /// <summary>
         /// Handles the login request by validating the user's credentials and returning a profile with a JWT token if successful.
@@ -35,17 +35,11 @@ namespace Application.Accounts.Login
 
             if (user is null) return Result<Profile>.Failure("User not found");
 
-            var result = await _userManager.CheckPasswordAsync(user, request.LoginRequest.Password!);
+            var passwordValid = await _userManager.CheckPasswordAsync(user, request.LoginRequest.Password!);
 
-            if (!result) return Result<Profile>.Failure("Invalid email or password");
+            if (!passwordValid) return Result<Profile>.Failure("Invalid email or password");
 
-            var profile = new Profile
-            {
-                FullName = user.FullName,
-                Email = user.Email,
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user)
-            };
+            var profile = await _profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
         }
