@@ -31,7 +31,7 @@ namespace Application.Accounts.Login
         /// <returns>A <see cref="Result{Profile}"/> containing the user's profile and token if successful, or an error message if authentication fails.</returns>
         public async Task<Result<Profile>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == request.LoginRequest.Email);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == request.LoginRequest.Email, cancellationToken);
 
             if (user is null) return Result<Profile>.Failure("User not found");
 
