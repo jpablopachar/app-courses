@@ -28,8 +28,13 @@ namespace Infrastructure.Security
         /// <returns>A JWT token as a string.</returns>
         public async Task<string> CreateToken(AppUser user)
         {
-            // TODO: Refactor to use proper EF Core querying instead of raw SQL
-            var policies = await _context.Database.SqlQuery<string>($"SELECT p.Name FROM Policies p INNER JOIN AppUserPolicies ap ON p.Id = ap.PolicyId WHERE ap.UserId = '{user.Id}'").ToListAsync();
+            var policies = await _context.Database.SqlQuery<string>(
+                $@"SELECT DISTINCT anrc.ClaimValue
+                FROM AspNetUserRoles anur
+                INNER JOIN AspNetRoleClaims anrc ON anur.RoleId = anrc.RoleId 
+                WHERE anur.UserId = {user.Id}
+                AND anrc.ClaimValue IS NOT NULL"
+            ).ToListAsync();
 
             var claims = new List<Claim>
                 {
