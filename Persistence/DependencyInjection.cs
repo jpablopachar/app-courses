@@ -10,6 +10,8 @@ namespace Persistence
     /// </summary>
     public static class DependencyInjection
     {
+        private const string SqliteConnectionStringName = "SqliteDb";
+
         /// <summary>
         /// Adds the persistence layer services to the application's dependency injection container.
         /// </summary>
@@ -18,15 +20,19 @@ namespace Persistence
         /// <returns>The updated IServiceCollection.</returns>
         public static IServiceCollection AddPersistence(
             this IServiceCollection services,
-            IConfiguration configuration
+            IConfiguration configuration,
+            bool isDevelopment = false
         )
         {
             services.AddDbContext<AppCoursesDbContext>(opt =>
             {
-                opt.LogTo(Console.WriteLine, [
-                DbLoggerCategory.Database.Command.Name
-            ], LogLevel.Information).EnableSensitiveDataLogging();
-                opt.UseSqlite(configuration.GetConnectionString("SqliteDb"));
+                if (isDevelopment)
+                {
+                    opt.LogTo(Console.WriteLine, [
+                        DbLoggerCategory.Database.Command.Name
+                    ], LogLevel.Information).EnableSensitiveDataLogging();
+                    opt.UseSqlite(configuration.GetConnectionString(SqliteConnectionStringName));
+                }
             });
 
             return services;
