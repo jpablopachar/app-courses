@@ -3,7 +3,6 @@ using Application.Core;
 using Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Persistence.Models;
 
 namespace Application.Accounts.Register
@@ -14,12 +13,14 @@ namespace Application.Accounts.Register
     /// and generating an authentication token for the registered user.
     /// </summary>
     /// <remarks>
-    /// This handler uses <see cref="UserManager{AppUser}"/> to manage user creation and <see cref="ITokenService"/> to generate tokens.
+    /// This handler uses <see cref="IUserRepository"/> to check for existing users and <see cref="UserManager{AppUser}"/> to manage user creation.
     /// </remarks>
-    /// <param name="userManager">The user manager for handling user-related operations.</param>
+    /// <param name="userRepository">The user repository for checking user existence.</param>
+    /// <param name="userManager">The user manager for handling user creation operations.</param>
     /// <param name="profileBuilderService">The profile builder service for creating user profiles.</param>
-    public class RegisterCommandHandler(UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService) : IRequestHandler<RegisterCommand, Result<Profile>>
+    public class RegisterCommandHandler(IUserRepository userRepository, UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService) : IRequestHandler<RegisterCommand, Result<Profile>>
     {
+        private readonly IUserRepository _userRepository = userRepository;
         private readonly UserManager<AppUser> _userManager = userManager;
         private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
 
@@ -32,7 +33,11 @@ namespace Application.Accounts.Register
         /// <returns>A <see cref="Result{Profile}"/> containing the user's profile and token if successful, or an error message if registration fails.</returns>
         public async Task<Result<Profile>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userManager.Users.Where(u => u.Email == request.RegisterRequest.Email || u.UserName == request.RegisterRequest.Username).Select(u => new { u.Email, u.UserName }).FirstOrDefaultAsync(cancellationToken);
+            var existingUser = await _userRepository.FindUserByEmailOrUsernameAsync(
+                request.RegisterRequest.Email!,
+                request.RegisterRequest.Username!,
+                cancellationToken
+            );
 
             if (existingUser != null)
             {
@@ -43,7 +48,6 @@ namespace Application.Accounts.Register
 
                 return Result<Profile>.Failure(ErrorMessages.UsernameTaken);
             }
-
 
             var user = new AppUser
             {
