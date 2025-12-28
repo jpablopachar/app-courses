@@ -1,62 +1,95 @@
 using System.Linq.Expressions;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
-using Persistence;
 
 namespace Application.Qualifications.GetQualifications
 {
-    public class GetQualificationsQueryHandler(AppCoursesDbContext context, IMapper mapper) : IRequestHandler<GetQualificationsQuery, Result<PagedList<QualificationResponse>>>
+    /// <summary>
+    /// Handles queries for retrieving paginated qualifications with filtering and sorting.
+    /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="GetQualificationsQueryHandler"/> class.
+    /// </remarks>
+    /// <param name="repository">The qualification repository.</param>
+    /// <param name="mapper">The AutoMapper instance.</param>
+    public class GetQualificationsQueryHandler(IQualificationRepository repository, IMapper mapper) : IRequestHandler<GetQualificationsQuery, Result<PagedList<QualificationResponse>>>
     {
-        private readonly AppCoursesDbContext _context = context;
+        private readonly IQualificationRepository _repository = repository;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<Result<PagedList<QualificationResponse>>> Handle(GetQualificationsQuery request, CancellationToken cancellationToken)
+        /// <inheritdoc/>
+        public async Task<Result<PagedList<QualificationResponse>>> Handle(
+            GetQualificationsQuery request,
+            CancellationToken cancellationToken)
         {
-            IQueryable<Qualification> queryable = _context.Qualifications!;
+            var requestParams = request.QualificationsRequest!;
+            var predicate = BuildFilterPredicate(requestParams);
+            var orderBySelector = BuildOrderBySelector(requestParams.OrderBy);
+            var orderAscending = requestParams.OrderAsc ?? true;
 
-            var predicate = ExpressionBuilder.New<Qualification>();
+            var qualifications = _repository.GetQualifications(
+                predicate,
+                orderBySelector,
+                orderAscending
+            );
 
-            if (!string.IsNullOrEmpty(request.QualificationsRequest!.Student))
-            {
-                predicate = predicate.And(q => q.Student!.Contains(request.QualificationsRequest.Student));
-            }
-
-            if (request.QualificationsRequest.CourseId is not null)
-            {
-                predicate = predicate.And(q => q.CourseId == request.QualificationsRequest.CourseId);
-            }
-
-            if (!string.IsNullOrEmpty(request.QualificationsRequest.OrderBy))
-            {
-                Expression<Func<Qualification, object>>? orderBySelector = request.QualificationsRequest.OrderBy.ToLower() switch
-                {
-                    "student" => q => q.Student!,
-                    "score" => q => q.Score,
-                    _ => q => q.Student!
-                };
-
-                bool orderBy = request.QualificationsRequest.OrderAsc ?? true;
-
-                queryable = orderBy
-                    ? queryable.OrderBy(orderBySelector)
-                    : queryable.OrderByDescending(orderBySelector);
-            }
-
-            queryable = queryable.Where(predicate);
-
-            var qualificationQuery = queryable
+            var qualificationResponses = qualifications
                 .ProjectTo<QualificationResponse>(_mapper.ConfigurationProvider)
                 .AsQueryable();
 
-            var pagination = PagedList<QualificationResponse>.CreateAsync(
-                qualificationQuery,
-                request.QualificationsRequest!.PageNumber,
-                request.QualificationsRequest.PageSize);
+            var pagedList = await PagedList<QualificationResponse>.CreateAsync(
+                qualificationResponses,
+                requestParams.PageNumber,
+                requestParams.PageSize
+            );
 
-            return Result<PagedList<QualificationResponse>>.Success(await pagination);
+            return Result<PagedList<QualificationResponse>>.Success(pagedList);
+        }
+
+        /// <summary>
+        /// Builds a filter predicate based on the request parameters.
+        /// </summary>
+        /// <param name="requestParams">The request parameters containing filter criteria.</param>
+        /// <returns>An expression representing the filter predicate.</returns>
+        private static Expression<Func<Qualification, bool>> BuildFilterPredicate(GetQualificationsRequest requestParams)
+        {
+            var predicate = ExpressionBuilder.New<Qualification>();
+
+            if (!string.IsNullOrEmpty(requestParams.Student))
+            {
+                predicate = predicate.And(q => q.Student != null && q.Student.Contains(requestParams.Student));
+            }
+
+            if (requestParams.CourseId.HasValue)
+            {
+                predicate = predicate.And(q => q.CourseId == requestParams.CourseId);
+            }
+
+            return predicate;
+        }
+
+        /// <summary>
+        /// Builds an order by selector based on the specified field name.
+        /// </summary>
+        /// <param name="orderByField">The field name to order by.</param>
+        /// <returns>An expression representing the order by selector, or null if no ordering is specified.</returns>
+        private static Expression<Func<Qualification, object>>? BuildOrderBySelector(string? orderByField)
+        {
+            if (string.IsNullOrEmpty(orderByField))
+            {
+                return null;
+            }
+
+            return orderByField.ToLower() switch
+            {
+                "student" => q => q.Student ?? string.Empty,
+                "score" => q => q.Score,
+                _ => q => q.Student ?? string.Empty
+            };
         }
     }
 }

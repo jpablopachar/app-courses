@@ -1,4 +1,6 @@
+using Application.Qualifications.GetQualifications;
 using AutoMapper;
+using Domain;
 
 namespace Application.Core
 {
@@ -6,7 +8,10 @@ namespace Application.Core
     {
         public MappingProfile()
         {
-            
+            CreateMap<Qualification, QualificationResponse>().ForMember(
+                dest => dest.CourseName,
+                opt => opt.MapFrom(src => src.Course!.Title)
+            );
         }
     }
 }

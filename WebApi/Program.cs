@@ -1,13 +1,21 @@
+using Infrastructure;
+using Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// TODO: Implementar esto
-/* builder.Services.AddPersistence(
+
+// Add Persistence layer
+builder.Services.AddPersistence(
     builder.Configuration,
     builder.Environment.IsDevelopment()
-); */
+);
+
+// Add Infrastructure layer (repositories and external services)
+builder.Services.AddInfrastructure();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
