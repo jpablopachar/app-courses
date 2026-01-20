@@ -16,6 +16,7 @@ namespace Infrastructure
         /// <returns>The updated IServiceCollection.</returns>
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.AddScoped<IInstructorRepository, InstructorRepository>();
             services.AddScoped<IQualificationRepository, QualificationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
