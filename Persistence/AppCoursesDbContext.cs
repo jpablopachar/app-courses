@@ -8,10 +8,10 @@ using Persistence.Models;
 namespace Persistence
 {
     /// <summary>
-    /// Represents the Entity Framework database context for the App Courses application, including identity and domain entities.
+    /// Representa el contexto de base de datos de Entity Framework para la aplicación App Courses, incluyendo entidades de identidad y dominio.
     /// </summary>
     /// <remarks>
-    /// This context manages the application's data access, entity configuration, and seeding of initial data for courses, instructors, prices, qualifications, and security roles.
+    /// Este contexto gestiona el acceso a datos de la aplicación, la configuración de entidades y la carga de datos iniciales para cursos, instructores, precios, calificaciones y roles de seguridad.
     /// </remarks>
     public class AppCoursesDbContext(DbContextOptions<AppCoursesDbContext> options) : IdentityDbContext<AppUser>(options)
     {
@@ -113,9 +113,9 @@ namespace Persistence
         }
 
         /// <summary>
-        /// Seeds the database with security-related data, including roles and role claims for authorization policies.
+        /// Carga datos relacionados con la seguridad, incluyendo roles y claims de roles para políticas de autorización.
         /// </summary>
-        /// <param name="modelBuilder">The <see cref="ModelBuilder"/> used to configure the model for the context.</param>
+        /// <param name="modelBuilder">El <see cref="ModelBuilder"/> utilizado para configurar el modelo del contexto.</param>
         private static void LoadSecurityData(ModelBuilder modelBuilder)
         {
             var adminId = Guid.NewGuid().ToString();
@@ -243,9 +243,9 @@ namespace Persistence
         }
 
         /// <summary>
-        /// Loads master data for seeding the database with sample courses, prices, and instructors.
+        /// Carga datos maestros para poblar la base de datos con cursos, precios e instructores de ejemplo.
         /// </summary>
-        /// <returns>A tuple containing arrays of <see cref="Course"/>, <see cref="Price"/>, and <see cref="Instructor"/> objects.</returns>
+        /// <returns>Una tupla que contiene arreglos de objetos <see cref="Course"/>, <see cref="Price"/> y <see cref="Instructor"/>.</returns>
         private static Tuple<Course[], Price[], Instructor[]> LoadMasterData()
         {
             var courses = new List<Course>();

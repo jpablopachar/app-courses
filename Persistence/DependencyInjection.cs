@@ -6,18 +6,18 @@ using Microsoft.Extensions.Logging;
 namespace Persistence
 {
     /// <summary>
-    /// Provides extension methods for registering persistence layer services in the dependency injection container.
+    /// Proporciona métodos de extensión para registrar servicios de la capa de persistencia en el contenedor de inyección de dependencias.
     /// </summary>
     public static class DependencyInjection
     {
         private const string SqliteConnectionStringName = "SqliteDb";
 
         /// <summary>
-        /// Adds the persistence layer services to the application's dependency injection container.
+        /// Agrega los servicios de la capa de persistencia al contenedor de inyección de dependencias de la aplicación.
         /// </summary>
-        /// <param name="services">The IServiceCollection to add services to.</param>
-        /// <param name="configuration">The application configuration containing connection strings.</param>
-        /// <returns>The updated IServiceCollection.</returns>
+        /// <param name="services">El IServiceCollection al que se agregan los servicios.</param>
+        /// <param name="configuration">La configuración de la aplicación que contiene las cadenas de conexión.</param>
+        /// <returns>El IServiceCollection actualizado.</returns>
         public static IServiceCollection AddPersistence(
             this IServiceCollection services,
             IConfiguration configuration,
