@@ -1,17 +1,17 @@
 namespace Application.Accounts.Login
 {
     /// <summary>
-    /// Represents a request for user login containing email and password.
+    /// Representa una solicitud de inicio de sesión de usuario que contiene correo y contraseña.
     /// </summary>
     public class LoginRequest
     {
         /// <summary>
-        /// Gets or sets the email address of the user attempting to log in.
+        /// Obtiene o establece la dirección de correo del usuario que intenta iniciar sesión.
         /// </summary>
         public string? Email { get; set; }
 
         /// <summary>
-        /// Gets or sets the password of the user attempting to log in.
+        /// Obtiene o establece la contraseña del usuario que intenta iniciar sesión.
         /// </summary>
         public string? Password { get; set; }
     }

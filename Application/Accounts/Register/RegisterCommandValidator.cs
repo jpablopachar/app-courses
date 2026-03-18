@@ -3,14 +3,14 @@ using FluentValidation;
 namespace Application.Accounts.Register
 {
     /// <summary>
-    /// Validator for <see cref="RegisterCommand"/>.
-    /// Ensures that the RegisterRequest property is valid using <see cref="RegisterValidator"/>.
+    /// Validador para <see cref="RegisterCommand"/>.
+    /// Asegura que la propiedad RegisterRequest sea válida utilizando <see cref="RegisterValidator"/>.
     /// </summary>
     public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RegisterCommandValidator"/> class.
-        /// Sets up validation rules for the RegisterRequest property.
+        /// Inicializa una nueva instancia de la clase <see cref="RegisterCommandValidator"/>.
+        /// Configura las reglas de validación para la propiedad RegisterRequest.
         /// </summary>
         public RegisterCommandValidator()
         {

@@ -4,17 +4,17 @@ using Application.Interfaces;
 namespace Infrastructure.Accounts
 {
     /// <summary>
-    /// Service responsible for building user profiles, including generating authentication tokens.
+    /// Servicio responsable de construir perfiles de usuario, incluyendo la generación de tokens de autenticación.
     /// </summary>
     public class ProfileBuilderService(ITokenService tokenService) : IProfileBuilderService
     {
         private readonly ITokenService _tokenService = tokenService;
 
         /// <summary>
-        /// Builds a <see cref="Profile"/> for the specified user, including a generated authentication token.
+        /// Construye un <see cref="Profile"/> para el usuario especificado, incluyendo un token de autenticación generado.
         /// </summary>
-        /// <param name="user">The user for whom to build the profile.</param>
-        /// <returns>A <see cref="Profile"/> object containing user information and an authentication token.</returns>
+        /// <param name="user">El usuario para el que se construye el perfil.</param>
+        /// <returns>Un objeto <see cref="Profile"/> que contiene la información del usuario y un token de autenticación.</returns>
         public async Task<Profile> BuildProfileAsync(Persistence.Models.AppUser user)
         {
             return new Profile

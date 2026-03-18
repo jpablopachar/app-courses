@@ -3,17 +3,17 @@ using Application.Core;
 namespace Application.Instructors.GetInstructors
 {
     /// <summary>
-    /// Request parameters for retrieving a paginated list of instructors, with optional filtering by name and last name.
+    /// Parámetros de solicitud para obtener una lista paginada de instructores, con filtrado opcional por nombre y apellido.
     /// </summary>
     public class GetInstructorsRequest : PagingParams
     {
         /// <summary>
-        /// Optional filter for the instructor's first name.
+        /// Filtro opcional para el nombre del instructor.
         /// </summary>
         public string? Name { get; set; }
 
         /// <summary>
-        /// Optional filter for the instructor's last name.
+        /// Filtro opcional para el apellido del instructor.
         /// </summary>
         public string? LastName { get; set; }
     }

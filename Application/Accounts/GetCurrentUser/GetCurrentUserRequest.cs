@@ -1,12 +1,12 @@
 namespace Application.Accounts.GetCurrentUser
 {
     /// <summary>
-    /// Represents a request to get the current user's information.
+    /// Representa una solicitud para obtener la información del usuario actual.
     /// </summary>
     public class GetCurrentUserRequest
     {
         /// <summary>
-        /// Gets or sets the email address of the current user.
+        /// Obtiene o establece la dirección de correo del usuario actual.
         /// </summary>
         public string? Email { get; set; }
     }

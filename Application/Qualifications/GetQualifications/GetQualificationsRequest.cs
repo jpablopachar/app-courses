@@ -3,17 +3,17 @@ using Application.Core;
 namespace Application.Qualifications.GetQualifications
 {
     /// <summary>
-    /// Request parameters for retrieving qualifications with optional filtering and paging.
+    /// Parámetros de solicitud para obtener calificaciones con filtrado y paginación opcional.
     /// </summary>
     public class GetQualificationsRequest : PagingParams
     {
         /// <summary>
-        /// Gets or sets the student identifier or name to filter qualifications.
+        /// Obtiene o establece el identificador o nombre del estudiante para filtrar calificaciones.
         /// </summary>
         public string? Student { get; set; }
 
         /// <summary>
-        /// Gets or sets the course identifier to filter qualifications.
+        /// Obtiene o establece el identificador del curso para filtrar calificaciones.
         /// </summary>
         public Guid? CourseId { get; set; }
     }

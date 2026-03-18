@@ -1,28 +1,28 @@
 namespace Application.Accounts
 {
+    /// <summary>
+    /// Representa un perfil de usuario con información básica de la cuenta.
+    /// </summary>
+    public class Profile
+    {
         /// <summary>
-        /// Represents a user profile with basic account information.
+        /// Obtiene o establece el nombre completo del usuario.
         /// </summary>
-        public class Profile
-        {
-            /// <summary>
-            /// Gets or sets the full name of the user.
-            /// </summary>
-            public string? FullName { get; set; }
+        public string? FullName { get; set; }
 
-            /// <summary>
-            /// Gets or sets the email address of the user.
-            /// </summary>
-            public string? Email { get; set; }
+        /// <summary>
+        /// Obtiene o establece la dirección de correo del usuario.
+        /// </summary>
+        public string? Email { get; set; }
 
-            /// <summary>
-            /// Gets or sets the authentication token for the user.
-            /// </summary>
-            public string? Token { get; set; }
+        /// <summary>
+        /// Obtiene o establece el token de autenticación del usuario.
+        /// </summary>
+        public string? Token { get; set; }
 
-            /// <summary>
-            /// Gets or sets the username of the user.
-            /// </summary>
-            public string? Username { get; set; }
-        }
+        /// <summary>
+        /// Obtiene o establece el nombre de usuario del usuario.
+        /// </summary>
+        public string? Username { get; set; }
+    }
 }

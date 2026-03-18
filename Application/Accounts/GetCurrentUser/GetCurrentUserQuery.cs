@@ -4,8 +4,8 @@ using MediatR;
 namespace Application.Accounts.GetCurrentUser
 {
     /// <summary>
-    /// Query to retrieve the current user's profile based on the provided request.
+    /// Consulta para obtener el perfil del usuario actual basado en la solicitud proporcionada.
     /// </summary>
-    /// <param name="GetCurrentUserRequest">The request containing information to identify the current user.</param>
+    /// <param name="GetCurrentUserRequest">La solicitud que contiene información para identificar al usuario actual.</param>
     public record GetCurrentUserQuery(GetCurrentUserRequest GetCurrentUserRequest) : IRequest<Result<Profile>>;
 }

@@ -5,15 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Infrastructure
 {
     /// <summary>
-    /// Provides extension methods for registering infrastructure layer services in the dependency injection container.
+    /// Proporciona métodos de extensión para registrar servicios de la capa de infraestructura en el contenedor de inyección de dependencias.
     /// </summary>
     public static class DependencyInjection
     {
         /// <summary>
-        /// Adds the infrastructure layer services to the application's dependency injection container.
+        /// Agrega los servicios de la capa de infraestructura al contenedor de inyección de dependencias de la aplicación.
         /// </summary>
-        /// <param name="services">The IServiceCollection to add services to.</param>
-        /// <returns>The updated IServiceCollection.</returns>
+        /// <param name="services">El IServiceCollection al que se agregan los servicios.</param>
+        /// <returns>El IServiceCollection actualizado.</returns>
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<IInstructorRepository, InstructorRepository>();

@@ -3,24 +3,24 @@ using FluentValidation;
 namespace Application.Accounts.Register
 {
     /// <summary>
-    /// Validator for the RegisterRequest model. Ensures that all required fields are provided and valid.
+    /// Validador para el modelo RegisterRequest. Asegura que todos los campos requeridos se proporcionen y sean válidos.
     /// </summary>
     public class RegisterValidator : AbstractValidator<RegisterRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RegisterValidator"/> class and sets up validation rules for registration.
+        /// Inicializa una nueva instancia de la clase <see cref="RegisterValidator"/> y configura las reglas de validación para el registro.
         /// </summary>
         public RegisterValidator()
         {
-            // Validates that FullName is not empty.
+            // Valida que FullName no esté vacío.
             RuleFor(x => x.FullName).NotEmpty().WithMessage("Full name is required.");
-            // Validates that Username is not empty.
+            // Valida que Username no esté vacío.
             RuleFor(x => x.Username).NotEmpty().WithMessage("Username is required.");
-            // Validates that Email is not empty and is a valid email address.
+            // Valida que Email no esté vacío y sea una dirección de correo válida.
             RuleFor(x => x.Email).NotEmpty().EmailAddress().WithMessage("A valid email is required.");
-            // Validates that Password is not empty and has a minimum length of 6 characters.
+            // Valida que Password no esté vacío y tenga una longitud mínima de 6 caracteres.
             RuleFor(x => x.Password).NotEmpty().MinimumLength(6).WithMessage("Password must be at least 6 characters long.");
-            // Validates that Degree is not empty.
+            // Valida que Degree no esté vacío.
             RuleFor(x => x.Degree).NotEmpty().WithMessage("Degree is required.");
         }
     }

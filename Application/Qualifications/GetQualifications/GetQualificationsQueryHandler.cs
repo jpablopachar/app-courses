@@ -9,13 +9,13 @@ using MediatR;
 namespace Application.Qualifications.GetQualifications
 {
     /// <summary>
-    /// Handles queries for retrieving paginated qualifications with filtering and sorting.
+    /// Maneja consultas para obtener calificaciones paginadas con filtrado y ordenamiento.
     /// </summary>
     /// <remarks>
-    /// Initializes a new instance of the <see cref="GetQualificationsQueryHandler"/> class.
+    /// Inicializa una nueva instancia de la clase <see cref="GetQualificationsQueryHandler"/>.
     /// </remarks>
-    /// <param name="repository">The qualification repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
+    /// <param name="repository">El repositorio de calificaciones.</param>
+    /// <param name="mapper">La instancia de AutoMapper.</param>
     public class GetQualificationsQueryHandler(IQualificationRepository repository, IMapper mapper) : IRequestHandler<GetQualificationsQuery, Result<PagedList<QualificationResponse>>>
     {
         private readonly IQualificationRepository _repository = repository;
@@ -51,10 +51,10 @@ namespace Application.Qualifications.GetQualifications
         }
 
         /// <summary>
-        /// Builds a filter predicate based on the request parameters.
+        /// Construye un predicado de filtro basado en los parámetros de solicitud.
         /// </summary>
-        /// <param name="requestParams">The request parameters containing filter criteria.</param>
-        /// <returns>An expression representing the filter predicate.</returns>
+        /// <param name="requestParams">Los parámetros de solicitud que contienen criterios de filtro.</param>
+        /// <returns>Una expresión que representa el predicado de filtro.</returns>
         private static Expression<Func<Qualification, bool>> BuildFilterPredicate(GetQualificationsRequest requestParams)
         {
             var predicate = ExpressionBuilder.New<Qualification>();
@@ -73,10 +73,10 @@ namespace Application.Qualifications.GetQualifications
         }
 
         /// <summary>
-        /// Builds an order by selector based on the specified field name.
+        /// Construye un selector de ordenamiento basado en el nombre de campo especificado.
         /// </summary>
-        /// <param name="orderByField">The field name to order by.</param>
-        /// <returns>An expression representing the order by selector, or null if no ordering is specified.</returns>
+        /// <param name="orderByField">El nombre del campo para ordenar.</param>
+        /// <returns>Una expresión que representa el selector de ordenamiento, o null si no se especifica ordenamiento.</returns>
         private static Expression<Func<Qualification, object>>? BuildOrderBySelector(string? orderByField)
         {
             if (string.IsNullOrEmpty(orderByField))

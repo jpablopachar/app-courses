@@ -3,15 +3,15 @@ using Persistence.Models;
 namespace Application.Interfaces
 {
     /// <summary>
-    /// Provides functionality for creating authentication tokens for users.
+    /// Proporciona funcionalidad para crear tokens de autenticación para usuarios.
     /// </summary>
     public interface ITokenService
     {
         /// <summary>
-        /// Creates a JWT token for the specified user.
+        /// Crea un token JWT para el usuario especificado.
         /// </summary>
-        /// <param name="user">The user for whom the token will be created.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the generated JWT token as a string.</returns>
+        /// <param name="user">El usuario para el que se creará el token.</param>
+        /// <returns>Una tarea que representa la operación asíncrona. El resultado de la tarea contiene el token JWT generado como cadena.</returns>
         Task<string> CreateToken(AppUser user);
     }
 }

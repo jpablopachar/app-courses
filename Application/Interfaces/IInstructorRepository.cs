@@ -4,17 +4,17 @@ using Domain;
 namespace Application.Interfaces
 {
     /// <summary>
-    /// Defines the contract for instructor data access operations.
+    /// Define el contrato para las operaciones de acceso a datos de instructores.
     /// </summary>
     public interface IInstructorRepository
     {
         /// <summary>
-        /// Gets a queryable collection of instructors with optional filtering and ordering.
+        /// Obtiene una colección consultable de instructores con filtrado y ordenamiento opcional.
         /// </summary>
-        /// <param name="predicate">Optional filter predicate to apply to the instructors.</param>
-        /// <param name="orderBySelector">Optional property selector for ordering.</param>
-        /// <param name="orderAscending">Determines the sort direction. True for ascending, false for descending.</param>
-        /// <returns>A queryable collection of instructors.</returns>
+        /// <param name="predicate">Predicado de filtro opcional para aplicar a los instructores.</param>
+        /// <param name="orderBySelector">Selector de propiedad opcional para el ordenamiento.</param>
+        /// <param name="orderAscending">Determina la dirección del orden. True para ascendente, false para descendente.</param>
+        /// <returns>Una colección consultable de instructores.</returns>
         IQueryable<Instructor> GetInstructors(
             Expression<Func<Instructor, bool>>? predicate = null,
             Expression<Func<Instructor, object>>? orderBySelector = null,

@@ -1,32 +1,32 @@
 namespace Application.Accounts.Register
 {
     /// <summary>
-    /// Represents a request to register a new account.
+    /// Representa una solicitud para registrar una nueva cuenta.
     /// </summary>
     public class RegisterRequest
     {
         /// <summary>
-        /// Gets or sets the full name of the user.
+        /// Obtiene o establece el nombre completo del usuario.
         /// </summary>
         public string? FullName { get; set; }
 
         /// <summary>
-        /// Gets or sets the username of the user.
+        /// Obtiene o establece el nombre de usuario.
         /// </summary>
         public string? Username { get; set; }
 
         /// <summary>
-        /// Gets or sets the email address of the user.
+        /// Obtiene o establece la dirección de correo electrónico del usuario.
         /// </summary>
         public string? Email { get; set; }
 
         /// <summary>
-        /// Gets or sets the password of the user.
+        /// Obtiene o establece la contraseña del usuario.
         /// </summary>
         public string? Password { get; set; }
 
         /// <summary>
-        /// Gets or sets the degree of the user.
+        /// Obtiene o establece el grado del usuario.
         /// </summary>
         public string? Degree { get; set; }
     }

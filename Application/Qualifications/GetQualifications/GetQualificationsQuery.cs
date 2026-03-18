@@ -4,16 +4,16 @@ using MediatR;
 namespace Application.Qualifications.GetQualifications
 {
     /// <summary>
-    /// Query to retrieve a paged list of qualifications based on the specified request parameters.
+    /// Consulta para obtener una lista paginada de calificaciones según los parámetros de solicitud especificados.
     /// </summary>
     /// <remarks>
-    /// This query is used to request qualifications with optional filtering and paging options.
+    /// Esta consulta se utiliza para solicitar calificaciones con opciones de filtrado y paginación opcionales.
     /// </remarks>
     public record GetQualificationsQuery
         : IRequest<Result<PagedList<QualificationResponse>>>
     {
         /// <summary>
-        /// The request parameters for filtering and paging qualifications.
+        /// Los parámetros de solicitud para filtrar y paginar calificaciones.
         /// </summary>
         public GetQualificationsRequest? QualificationsRequest { get; set; }
     }

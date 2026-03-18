@@ -4,8 +4,8 @@ using MediatR;
 namespace Application.Accounts.Login
 {
     /// <summary>
-    /// Command record for handling user login requests.
+    /// Registro de comando para gestionar solicitudes de inicio de sesión de usuario.
     /// </summary>
-    /// <param name="LoginRequest">The login request containing user credentials.</param>
+    /// <param name="LoginRequest">La solicitud de inicio de sesión que contiene las credenciales del usuario.</param>
     public record LoginCommand(LoginRequest LoginRequest) : IRequest<Result<Profile>>, ICommandBase;
 }

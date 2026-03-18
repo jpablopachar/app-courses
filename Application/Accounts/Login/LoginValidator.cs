@@ -3,12 +3,12 @@ using FluentValidation;
 namespace Application.Accounts.Login
 {
     /// <summary>
-    /// Validator for the <see cref="LoginRequest"/> class. Ensures that the email and password fields meet the required criteria.
+    /// Validador para la clase <see cref="LoginRequest"/>. Asegura que los campos de correo y contraseña cumplan con los criterios requeridos.
     /// </summary>
     public class LoginValidator : AbstractValidator<LoginRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoginValidator"/> class and defines validation rules for login requests.
+        /// Inicializa una nueva instancia de la clase <see cref="LoginValidator"/> y define las reglas de validación para solicitudes de inicio de sesión.
         /// </summary>
         public LoginValidator()
         {

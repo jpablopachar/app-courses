@@ -3,40 +3,40 @@ using Persistence.Models;
 namespace Application.Interfaces
 {
     /// <summary>
-    /// Defines the contract for user data access operations.
+    /// Define el contrato para operaciones de acceso a datos de usuarios.
     /// </summary>
     public interface IUserRepository
     {
         /// <summary>
-        /// Gets a user by their email address.
+        /// Obtiene un usuario por su dirección de correo electrónico.
         /// </summary>
-        /// <param name="email">The email address of the user.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The user with the specified email, or null if not found.</returns>
+        /// <param name="email">La dirección de correo del usuario.</param>
+        /// <param name="cancellationToken">Token de cancelación.</param>
+        /// <returns>El usuario con el correo especificado, o null si no se encuentra.</returns>
         Task<AppUser?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Checks if a user exists with the specified email or username.
+        /// Verifica si existe un usuario con el correo o nombre de usuario especificado.
         /// </summary>
-        /// <param name="email">The email to check.</param>
-        /// <param name="username">The username to check.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An anonymous object with Email and UserName properties if found, null otherwise.</returns>
+        /// <param name="email">El correo a verificar.</param>
+        /// <param name="username">El nombre de usuario a verificar.</param>
+        /// <param name="cancellationToken">Token de cancelación.</param>
+        /// <returns>Un objeto con propiedades Email y UserName si se encuentra, null en caso contrario.</returns>
         Task<UserExistsResult?> FindUserByEmailOrUsernameAsync(string email, string username, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// Represents the result of checking if a user exists by email or username.
+    /// Representa el resultado de verificar si un usuario existe por correo o nombre de usuario.
     /// </summary>
     public class UserExistsResult
     {
         /// <summary>
-        /// Gets or sets the email of the existing user.
+        /// Obtiene o establece el correo del usuario existente.
         /// </summary>
         public string? Email { get; set; }
 
         /// <summary>
-        /// Gets or sets the username of the existing user.
+        /// Obtiene o establece el nombre de usuario del usuario existente.
         /// </summary>
         public string? UserName { get; set; }
     }

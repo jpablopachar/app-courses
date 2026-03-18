@@ -6,12 +6,12 @@ using Persistence.Models;
 namespace Infrastructure.Repositories
 {
     /// <summary>
-    /// Implements user data access operations using ASP.NET Core Identity UserManager.
+    /// Implementa operaciones de acceso a datos de usuarios utilizando ASP.NET Core Identity UserManager.
     /// </summary>
     /// <remarks>
-    /// Initializes a new instance of the <see cref="UserRepository"/> class.
+    /// Inicializa una nueva instancia de la clase <see cref="UserRepository"/>.
     /// </remarks>
-    /// <param name="userManager">The UserManager instance for accessing user data.</param>
+    /// <param name="userManager">La instancia de UserManager para acceder a los datos de usuario.</param>
     public class UserRepository(UserManager<AppUser> userManager) : IUserRepository
     {
         private readonly UserManager<AppUser> _userManager = userManager;

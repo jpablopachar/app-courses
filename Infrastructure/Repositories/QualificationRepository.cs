@@ -7,12 +7,12 @@ using Persistence;
 namespace Infrastructure.Repositories
 {
     /// <summary>
-    /// Implements qualification data access operations.
+    /// Implementa las operaciones de acceso a datos de calificaciones.
     /// </summary>
     /// <remarks>
-    /// Initializes a new instance of the <see cref="QualificationRepository"/> class.
+    /// Inicializa una nueva instancia de la clase <see cref="QualificationRepository"/>.
     /// </remarks>
-    /// <param name="context">The database context.</param>
+    /// <param name="context">El contexto de base de datos.</param>
     public class QualificationRepository(AppCoursesDbContext context) : IQualificationRepository
     {
         private readonly AppCoursesDbContext _context = context;

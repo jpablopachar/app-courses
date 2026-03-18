@@ -9,15 +9,15 @@ namespace Application.Accounts.Register
 {
 
     /// <summary>
-    /// Handles user registration by validating email and username uniqueness, creating a new user,
-    /// and generating an authentication token for the registered user.
+    /// Maneja el registro de usuarios validando la unicidad del correo y nombre de usuario, creando un nuevo usuario,
+    /// y generando un token de autenticación para el usuario registrado.
     /// </summary>
     /// <remarks>
-    /// This handler uses <see cref="IUserRepository"/> to check for existing users and <see cref="UserManager{AppUser}"/> to manage user creation.
+    /// Este manejador utiliza <see cref="IUserRepository"/> para verificar usuarios existentes y <see cref="UserManager{AppUser}"/> para gestionar la creación de usuarios.
     /// </remarks>
-    /// <param name="userRepository">The user repository for checking user existence.</param>
-    /// <param name="userManager">The user manager for handling user creation operations.</param>
-    /// <param name="profileBuilderService">The profile builder service for creating user profiles.</param>
+    /// <param name="userRepository">El repositorio de usuarios para verificar la existencia del usuario.</param>
+    /// <param name="userManager">El gestor de usuarios para gestionar operaciones de creación de usuarios.</param>
+    /// <param name="profileBuilderService">El servicio generador de perfiles para crear perfiles de usuarios.</param>
     public class RegisterCommandHandler(IUserRepository userRepository, UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService) : IRequestHandler<RegisterCommand, Result<Profile>>
     {
         private readonly IUserRepository _userRepository = userRepository;
@@ -25,12 +25,12 @@ namespace Application.Accounts.Register
         private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
 
         /// <summary>
-        /// Handles the registration of a new user by validating email and username uniqueness, creating the user,
-        /// and returning a profile with a generated authentication token.
+        /// Maneja el registro de un nuevo usuario validando la unicidad del correo y nombre de usuario, creando el usuario,
+        /// y retornando un perfil con un token de autenticación generado.
         /// </summary>
-        /// <param name="request">The register command containing user registration details.</param>
-        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-        /// <returns>A <see cref="Result{Profile}"/> containing the user's profile and token if successful, or an error message if registration fails.</returns>
+        /// <param name="request">El comando de registro que contiene los detalles del registro del usuario.</param>
+        /// <param name="cancellationToken">Un token para monitorear solicitudes de cancelación.</param>
+        /// <returns>Un <see cref="Result{Profile}"/> que contiene el perfil del usuario y token si es exitoso, o un mensaje de error si el registro falla.</returns>
         public async Task<Result<Profile>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var existingUser = await _userRepository.FindUserByEmailOrUsernameAsync(

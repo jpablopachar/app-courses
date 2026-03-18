@@ -4,17 +4,17 @@ using Domain;
 namespace Application.Interfaces
 {
     /// <summary>
-    /// Defines the contract for qualification data access operations.
+    /// Define el contrato para operaciones de acceso a datos de calificaciones.
     /// </summary>
     public interface IQualificationRepository
     {
         /// <summary>
-        /// Gets a queryable collection of qualifications with optional filtering and ordering.
+        /// Obtiene una colección consultable de calificaciones con filtrado y ordenamiento opcional.
         /// </summary>
-        /// <param name="predicate">Optional filter predicate to apply to the qualifications.</param>
-        /// <param name="orderBySelector">Optional property selector for ordering.</param>
-        /// <param name="orderAscending">Determines the sort direction. True for ascending, false for descending.</param>
-        /// <returns>A queryable collection of qualifications.</returns>
+        /// <param name="predicate">Predicado de filtro opcional para aplicar a las calificaciones.</param>
+        /// <param name="orderBySelector">Selector de propiedad opcional para el ordenamiento.</param>
+        /// <param name="orderAscending">Determina la dirección del orden. True para ascendente, false para descendente.</param>
+        /// <returns>Una colección consultable de calificaciones.</returns>
         IQueryable<Qualification> GetQualifications(
             Expression<Func<Qualification, bool>>? predicate = null,
             Expression<Func<Qualification, object>>? orderBySelector = null,

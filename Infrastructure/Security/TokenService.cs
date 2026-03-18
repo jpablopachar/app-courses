@@ -11,10 +11,10 @@ using Persistence.Models;
 namespace Infrastructure.Security
 {
     /// <summary>
-    /// Provides functionality for generating JWT tokens for application users.
+    /// Proporciona funcionalidad para generar tokens JWT para los usuarios de la aplicación.
     /// </summary>
     /// <remarks>
-    /// This service retrieves user policies from the database and includes them as roles in the generated token.
+    /// Este servicio recupera las políticas de usuario desde la base de datos y las incluye como roles en el token generado.
     /// </remarks>
     public class TokenService(AppCoursesDbContext appCoursesDbContext, IConfiguration configuration) : ITokenService
     {
@@ -22,10 +22,10 @@ namespace Infrastructure.Security
         private readonly IConfiguration _configuration = configuration;
 
         /// <summary>
-        /// Creates a JWT token for the specified user, including their roles as claims.
+        /// Crea un token JWT para el usuario especificado, incluyendo sus roles como claims.
         /// </summary>
-        /// <param name="user">The application user for whom the token is to be created.</param>
-        /// <returns>A JWT token as a string.</returns>
+        /// <param name="user">El usuario de la aplicación para el que se creará el token.</param>
+        /// <returns>Un token JWT como cadena.</returns>
         public async Task<string> CreateToken(AppUser user)
         {
             var policies = await _context.Database.SqlQuery<string>(

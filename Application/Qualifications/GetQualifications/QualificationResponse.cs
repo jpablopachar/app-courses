@@ -1,16 +1,16 @@
 namespace Application.Qualifications.GetQualifications
 {
     /// <summary>
-    /// Represents the response containing qualification details for a student.
+    /// Representa la respuesta que contiene los detalles de la calificación de un estudiante.
     /// </summary>
-    /// <param name="Student">The name of the student.</param>
-    /// <param name="Store">The store identifier associated with the qualification.</param>
-    /// <param name="Comment">Any comment related to the qualification.</param>
-    /// <param name="CourseName">The name of the course.</param>
+    /// <param name="Student">El nombre del estudiante.</param>
+    /// <param name="Store">El identificador de tienda asociado a la calificación.</param>
+    /// <param name="Comment">Cualquier comentario relacionado con la calificación.</param>
+    /// <param name="CourseName">El nombre del curso.</param>
     public record QualificationResponse(string? Student, int? Store, string? Comment, string? CourseName)
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QualificationResponse"/> record with all properties set to null.
+        /// Inicializa una nueva instancia del registro <see cref="QualificationResponse"/> con todas las propiedades en null.
         /// </summary>
         public QualificationResponse() : this(null, null, null, null) { }
     }

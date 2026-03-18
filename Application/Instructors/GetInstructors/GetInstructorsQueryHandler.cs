@@ -9,13 +9,13 @@ using MediatR;
 namespace Application.Instructors.GetInstructors
 {
     /// <summary>
-    /// Handles queries for retrieving paginated instructors with filtering and sorting.
+    /// Maneja consultas para obtener instructores paginados con filtrado y ordenamiento.
     /// </summary>
     /// <remarks>
-    /// Initializes a new instance of the <see cref="GetInstructorsQueryHandler"/> class.
+    /// Inicializa una nueva instancia de la clase <see cref="GetInstructorsQueryHandler"/>.
     /// </remarks>
-    /// <param name="repository">The instructor repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
+    /// <param name="repository">El repositorio de instructores.</param>
+    /// <param name="mapper">La instancia de AutoMapper.</param>
     public class GetInstructorsQueryHandler(IInstructorRepository repository, IMapper mapper) : IRequestHandler<GetInstructorsQuery, Result<PagedList<InstructorResponse>>>
     {
         private readonly IInstructorRepository _repository = repository;
@@ -51,10 +51,10 @@ namespace Application.Instructors.GetInstructors
         }
 
         /// <summary>
-        /// Builds a filter predicate based on the request parameters.
+        /// Construye un predicado de filtro basado en los parámetros de solicitud.
         /// </summary>
-        /// <param name="requestParams">The request parameters containing filter criteria.</param>
-        /// <returns>An expression representing the filter predicate.</returns>
+        /// <param name="requestParams">Los parámetros de solicitud que contienen criterios de filtro.</param>
+        /// <returns>Una expresión que representa el predicado de filtro.</returns>
         private static Expression<Func<Instructor, bool>> BuildFilterPredicate(GetInstructorsRequest requestParams)
         {
             var predicate = ExpressionBuilder.New<Instructor>();

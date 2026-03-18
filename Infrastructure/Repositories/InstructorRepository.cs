@@ -6,12 +6,12 @@ using Persistence;
 namespace Infrastructure.Repositories
 {
     /// <summary>
-    /// Implements instructor data access operations.
+    /// Implementa las operaciones de acceso a datos de instructores.
     /// </summary>
     /// <remarks>
-    /// Initializes a new instance of the <see cref="InstructorRepository"/> class.
+    /// Inicializa una nueva instancia de la clase <see cref="InstructorRepository"/>.
     /// </remarks>
-    /// <param name="context">The database context.</param>
+    /// <param name="context">El contexto de base de datos.</param>
     public class InstructorRepository(AppCoursesDbContext context) : IInstructorRepository
     {
         private readonly AppCoursesDbContext _context = context;

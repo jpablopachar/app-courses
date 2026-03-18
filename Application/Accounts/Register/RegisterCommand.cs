@@ -4,8 +4,8 @@ using MediatR;
 namespace Application.Accounts.Register
 {
     /// <summary>
-    /// Represents a command request to register a new account.
+    /// Representa una solicitud de comando para registrar una nueva cuenta.
     /// </summary>
-    /// <param name="RegisterRequest">The registration details for the new account.</param>
+    /// <param name="RegisterRequest">Los detalles de registro para la nueva cuenta.</param>
     public record RegisterCommand(RegisterRequest RegisterRequest) : IRequest<Result<Profile>>, ICommandBase;
 }

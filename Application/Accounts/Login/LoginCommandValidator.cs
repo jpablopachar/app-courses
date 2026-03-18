@@ -3,14 +3,14 @@ using FluentValidation;
 namespace Application.Accounts.Login
 {
     /// <summary>
-    /// Validator for the <see cref="LoginCommand"/> class.
-    /// Ensures that the LoginRequest property is validated using <see cref="LoginValidator"/>.
+    /// Validador para la clase <see cref="LoginCommand"/>.
+    /// Asegura que la propiedad LoginRequest sea validada utilizando <see cref="LoginValidator"/>.
     /// </summary>
     public class LoginCommandValidator : AbstractValidator<LoginCommand>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoginCommandValidator"/> class.
-        /// Sets up validation rules for the LoginCommand.
+        /// Inicializa una nueva instancia de la clase <see cref="LoginCommandValidator"/>.
+        /// Configura las reglas de validación para LoginCommand.
         /// </summary>
         public LoginCommandValidator()
         {
