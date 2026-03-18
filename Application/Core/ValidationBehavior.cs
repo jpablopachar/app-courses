@@ -4,26 +4,26 @@ using MediatR;
 namespace Application.Core
 {
     /// <summary>
-    /// Pipeline behavior for validating requests using FluentValidation before passing them to the next handler.
+    /// Comportamiento de pipeline para validar solicitudes usando FluentValidation antes de pasarlas al siguiente manejador.
     /// </summary>
-    /// <typeparam name="TRequest">The type of the request.</typeparam>
-    /// <typeparam name="TResponse">The type of the response.</typeparam>
-    /// <param name="validators">A collection of validators for the request type.</param>
+    /// <typeparam name="TRequest">El tipo de la solicitud.</typeparam>
+    /// <typeparam name="TResponse">El tipo de la respuesta.</typeparam>
+    /// <param name="validators">Una colección de validadores para el tipo de solicitud.</param>
     public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse> where TRequest : ICommandBase
     {
         /// <summary>
-        /// The collection of validators for the request.
+        /// La colección de validadores para la solicitud.
         /// </summary>
         private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
         /// <summary>
-        /// Handles the validation of the request. If validation fails, throws a <see cref="ValidationException"/>.
+        /// Maneja la validación de la solicitud. Si la validación falla, lanza una <see cref="ValidationException"/>.
         /// </summary>
-        /// <param name="request">The incoming request to validate.</param>
-        /// <param name="next">The next delegate in the pipeline.</param>
-        /// <param name="cancellationToken">A cancellation token.</param>
-        /// <returns>The response from the next handler if validation succeeds.</returns>
-        /// <exception cref="ValidationException">Thrown when validation errors are found.</exception>
+        /// <param name="request">La solicitud entrante a validar.</param>
+        /// <param name="next">El siguiente delegado en el pipeline.</param>
+        /// <param name="cancellationToken">Un token de cancelación.</param>
+        /// <returns>La respuesta del siguiente manejador si la validación es exitosa.</returns>
+        /// <exception cref="ValidationException">Se lanza cuando se encuentran errores de validación.</exception>
         public async Task<TResponse> Handle(
             TRequest request,
             RequestHandlerDelegate<TResponse> next,

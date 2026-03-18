@@ -1,27 +1,27 @@
 ﻿namespace Domain
 {
     /// <summary>
-    /// Represents the association between a course and an instructor.
+    /// Representa la asociación entre un curso y un instructor.
     /// </summary>
     public class CourseInstructor
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the course.
+        /// Obtiene o establece el identificador único del curso.
         /// </summary>
         public Guid? CourseId { get; set; }
 
         /// <summary>
-        /// Gets or sets the course associated with the instructor.
+        /// Obtiene o establece el curso asociado al instructor.
         /// </summary>
         public Course? Course { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier of the instructor.
+        /// Obtiene o establece el identificador único del instructor.
         /// </summary>
         public Guid? InstructorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the instructor associated with the course.
+        /// Obtiene o establece el instructor asociado al curso.
         /// </summary>
         public Instructor? Instructor { get; set; }
     }

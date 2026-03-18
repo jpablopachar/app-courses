@@ -1,27 +1,27 @@
 namespace Domain
 {
     /// <summary>
-    /// Represents the association between a Course and its Price.
+    /// Representa la asociación entre un Curso y su Precio.
     /// </summary>
     public class CoursePrice
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the associated Course.
+        /// Obtiene o establece el identificador único del Curso asociado.
         /// </summary>
         public Guid? CourseId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Course entity associated with this CoursePrice.
+        /// Obtiene o establece la entidad Curso asociada a este CoursePrice.
         /// </summary>
         public Course? Course { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier of the associated Price.
+        /// Obtiene o establece el identificador único del Precio asociado.
         /// </summary>
         public Guid? PriceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Price entity associated with this CoursePrice.
+        /// Obtiene o establece la entidad Precio asociada a este CoursePrice.
         /// </summary>
         public Price? Price { get; set; }
     }

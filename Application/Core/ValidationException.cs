@@ -4,23 +4,23 @@ using Application.Common.Constants;
 namespace Application.Core
 {
     /// <summary>
-    /// Represents an exception that is thrown when validation errors occur.
+    /// Representa una excepción que se lanza cuando ocurren errores de validación.
     /// </summary>
     /// <remarks>
-    /// This exception contains a collection of <see cref="ValidationError"/> objects describing the validation failures.
+    /// Esta excepción contiene una colección de objetos <see cref="ValidationError"/> que describen los fallos de validación.
     /// </remarks>
     public sealed class ValidationException : Exception
     {
         /// <summary>
-        /// Gets the collection of validation errors associated with this exception.
+        /// Obtiene la colección de errores de validación asociados con esta excepción.
         /// </summary>
         public IReadOnlyList<ValidationError> Errors { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValidationException"/> class.
+        /// Inicializa una nueva instancia de la clase <see cref="ValidationException"/>.
         /// </summary>
-        /// <param name="errors">The collection of validation errors that caused the exception.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="errors"/> is null.</exception>
+        /// <param name="errors">La colección de errores de validación que causaron la excepción.</param>
+        /// <exception cref="ArgumentNullException">Se lanza cuando <paramref name="errors"/> es nulo.</exception>
         public ValidationException(IEnumerable<ValidationError> errors)
             : base(ErrorMessages.ValidationFailed)
         {

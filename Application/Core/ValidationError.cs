@@ -1,9 +1,9 @@
 namespace Application.Core
 {
     /// <summary>
-    /// Represents a validation error for a specific property.
+    /// Representa un error de validación para una propiedad específica.
     /// </summary>
-    /// <param name="PropertyName">The name of the property that failed validation.</param>
-    /// <param name="ErrorMessage">The error message describing the validation failure.</param>
+    /// <param name="PropertyName">El nombre de la propiedad que falló la validación.</param>
+    /// <param name="ErrorMessage">El mensaje de error que describe el fallo de validación.</param>
     public sealed record ValidationError(string PropertyName, string ErrorMessage);
 }

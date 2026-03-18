@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Core
 {
     /// <summary>
-    /// Represents a paged list of items with pagination metadata.
+    /// Representa una lista paginada de elementos con metadatos de paginación.
     /// </summary>
-    /// <typeparam name="T">The type of items in the list.</typeparam>
-    /// <param name="items">The items in the current page.</param>
-    /// <param name="count">The total number of items.</param>
-    /// <param name="pageNumber">The current page number.</param>
-    /// <param name="pageSize">The number of items per page.</param>
+    /// <typeparam name="T">El tipo de elementos en la lista.</typeparam>
+    /// <param name="items">Los elementos de la página actual.</param>
+    /// <param name="count">El número total de elementos.</param>
+    /// <param name="pageNumber">El número de página actual.</param>
+    /// <param name="pageSize">El número de elementos por página.</param>
     public class PagedList<T>(
     List<T> items,
     int count,
@@ -18,37 +18,37 @@ namespace Application.Core
     )
     {
         /// <summary>
-        /// Gets or sets the current page number.
+        /// Obtiene o establece el número de página actual.
         /// </summary>
         public int CurrentPage { get; set; } = pageNumber;
 
         /// <summary>
-        /// Gets or sets the total number of pages.
+        /// Obtiene o establece el número total de páginas.
         /// </summary>
         public int TotalPages { get; set; } = (int)Math.Ceiling(count / (double)pageSize);
 
         /// <summary>
-        /// Gets or sets the number of items per page.
+        /// Obtiene o establece el número de elementos por página.
         /// </summary>
         public int PageSize { get; set; } = pageSize;
 
         /// <summary>
-        /// Gets or sets the total number of items.
+        /// Obtiene o establece el número total de elementos.
         /// </summary>
         public int TotalCount { get; set; } = count;
 
         /// <summary>
-        /// Gets or sets the items in the current page.
+        /// Obtiene o establece los elementos de la página actual.
         /// </summary>
         public List<T> Items { get; set; } = items;
 
         /// <summary>
-        /// Creates a paged list asynchronously from an <see cref="IQueryable{T}"/> source.
+        /// Crea una lista paginada de manera asíncrona desde una fuente <see cref="IQueryable{T}"/>.
         /// </summary>
-        /// <param name="source">The queryable data source.</param>
-        /// <param name="pageNumber">The page number to retrieve.</param>
-        /// <param name="pageSize">The number of items per page.</param>
-        /// <returns>A <see cref="PagedList{T}"/> containing the items and pagination metadata.</returns>
+        /// <param name="source">La fuente de datos consultable.</param>
+        /// <param name="pageNumber">El número de página a recuperar.</param>
+        /// <param name="pageSize">El número de elementos por página.</param>
+        /// <returns>Una instancia de <see cref="PagedList{T}"/> que contiene los elementos y metadatos de paginación.</returns>
         public static async Task<PagedList<T>> CreateAsync(
             IQueryable<T> source,
             int pageNumber,

@@ -1,38 +1,38 @@
 namespace Application.Core
 {
     /// <summary>
-    /// Represents the result of an operation, indicating success or failure and containing a value or an error message.
+    /// Representa el resultado de una operación, indicando éxito o fracaso y conteniendo un valor o un mensaje de error.
     /// </summary>
-    /// <typeparam name="T">The type of the value returned by the operation.</typeparam>
+    /// <typeparam name="T">El tipo del valor retornado por la operación.</typeparam>
     public class Result<T>
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the operation was successful.
+        /// Obtiene o establece un valor que indica si la operación fue exitosa.
         /// </summary>
         public bool IsSuccess { get; set; }
 
         /// <summary>
-        /// Gets or sets the value returned by the operation if it was successful.
+        /// Obtiene o establece el valor retornado por la operación si fue exitosa.
         /// </summary>
         public T? Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the error message if the operation failed.
+        /// Obtiene o establece el mensaje de error si la operación falló.
         /// </summary>
         public string? Error { get; set; }
 
         /// <summary>
-        /// Creates a successful result with the specified value.
+        /// Crea un resultado exitoso con el valor especificado.
         /// </summary>
-        /// <param name="value">The value to be returned as part of the successful result.</param>
-        /// <returns>A <see cref="Result{T}"/> instance representing success.</returns>
+        /// <param name="value">El valor que se retornará como parte del resultado exitoso.</param>
+        /// <returns>Una instancia de <see cref="Result{T}"/> que representa éxito.</returns>
         public static Result<T> Success(T value) => new() { IsSuccess = true, Value = value };
 
         /// <summary>
-        /// Creates a failed result with the specified error message.
+        /// Crea un resultado fallido con el mensaje de error especificado.
         /// </summary>
-        /// <param name="error">The error message describing the failure.</param>
-        /// <returns>A <see cref="Result{T}"/> instance representing failure.</returns>
+        /// <param name="error">El mensaje de error que describe el fallo.</param>
+        /// <returns>Una instancia de <see cref="Result{T}"/> que representa fracaso.</returns>
         public static Result<T> Failure(string error) => new() { IsSuccess = false, Error = error };
     }
 }

@@ -1,32 +1,32 @@
 namespace Domain
 {
     /// <summary>
-    /// Represents the price details for a course, including current and promotional prices.
+    /// Representa los detalles de precio de un curso, incluyendo precios actuales y promocionales.
     /// </summary>
     public class Price : BaseEntity
     {
         /// <summary>
-        /// Gets or sets the name of the price.
+        /// Obtiene o establece el nombre del precio.
         /// </summary>
         public string? Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the current price value.
+        /// Obtiene o establece el valor del precio actual.
         /// </summary>
         public decimal CurrentPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the promotional price value.
+        /// Obtiene o establece el valor del precio promocional.
         /// </summary>
         public decimal PromotionalPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of courses associated with this price.
+        /// Obtiene o establece la colección de cursos asociada a este precio.
         /// </summary>
         public ICollection<Course>? Courses { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of course-price relationships.
+        /// Obtiene o establece la colección de relaciones curso-precio.
         /// </summary>
         public ICollection<CoursePrice>? CoursePrices { get; set; }
     }

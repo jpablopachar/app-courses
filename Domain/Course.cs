@@ -1,17 +1,17 @@
 namespace Domain
 {
     /// <summary>
-    /// Represents a course entity with related properties and navigation collections.
+    /// Representa una entidad de curso con propiedades relacionadas y colecciones de navegación.
     /// </summary>
     public class Course : BaseEntity
     {
         /// <summary>
-        /// Gets or sets the title of the course.
+        /// Obtiene o establece el título del curso.
         /// </summary>
         public string? Title { get; set; }
 
         /// <summary>
-        /// Gets or sets the description of the course.
+        /// Obtiene o establece la descripción del curso.
         /// </summary>
         public string? Description
         {
@@ -20,37 +20,37 @@ namespace Domain
         }
 
         /// <summary>
-        /// Gets or sets the publication date of the course.
+        /// Obtiene o establece la fecha de publicación del curso.
         /// </summary>
         public DateTime? PublicationDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of qualifications associated with the course.
+        /// Obtiene o establece la colección de calificaciones asociadas al curso.
         /// </summary>
         public ICollection<Qualification>? Qualifications { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of prices associated with the course.
+        /// Obtiene o establece la colección de precios asociada al curso.
         /// </summary>
         public ICollection<Price>? Prices { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of course prices associated with the course.
+        /// Obtiene o establece la colección de precios de curso asociada al curso.
         /// </summary>
         public ICollection<CoursePrice>? CoursePrices { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of instructors associated with the course.
+        /// Obtiene o establece la colección de instructores asociada al curso.
         /// </summary>
         public ICollection<Instructor>? Instructors { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of course instructors associated with the course.
+        /// Obtiene o establece la colección de relaciones curso-instructor asociada al curso.
         /// </summary>
         public ICollection<CourseInstructor>? CourseInstructors { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of photos associated with the course.
+        /// Obtiene o establece la colección de fotos asociada al curso.
         /// </summary>
         public ICollection<Photo>? Photos { get; set; }
     }

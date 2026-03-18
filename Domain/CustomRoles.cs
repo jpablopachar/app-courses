@@ -1,17 +1,17 @@
 namespace Domain
 {
     /// <summary>
-    /// Provides custom role names used for authorization within the application.
+    /// Proporciona nombres de roles personalizados utilizados para la autorización dentro de la aplicación.
     /// </summary>
     public static class CustomRoles
     {
         /// <summary>
-        /// Represents the administrator role.
+        /// Representa el rol de administrador.
         /// </summary>
         public const string ADMIN = nameof(ADMIN);
 
         /// <summary>
-        /// Represents the client role.
+        /// Representa el rol de cliente.
         /// </summary>
         public const string CLIENT = nameof(CLIENT);
     }

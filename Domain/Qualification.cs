@@ -1,29 +1,29 @@
 namespace Domain
 {
     /// <summary>
-    /// Represents a qualification record for a student, including score, comments, and associated course information.
+    /// Representa un registro de calificación para un estudiante, incluyendo puntaje, comentarios e información del curso asociado.
     /// </summary>
     public class Qualification : BaseEntity
     {
         /// <summary>
-        /// Gets or sets the name of the student associated with this qualification.
+        /// Obtiene o establece el nombre del estudiante asociado a esta calificación.
         /// </summary>
         public string? Student { get; set; }
         /// <summary>
-        /// Gets or sets the score achieved by the student.
+        /// Obtiene o establece el puntaje obtenido por el estudiante.
         /// </summary>
         public int Score { get; set; }
         /// <summary>
-        /// Gets or sets an optional comment regarding the qualification.
+        /// Obtiene o establece un comentario opcional sobre la calificación.
         /// </summary>
         public string? Comment { get; set; }
         /// <summary>
-        /// Gets or sets the unique identifier of the associated course.
+        /// Obtiene o establece el identificador único del curso asociado.
         /// </summary>
         public Guid? CourseId { get; set; }
 
         /// <summary>
-        /// Gets or sets the course associated with this qualification.
+        /// Obtiene o establece el curso asociado a esta calificación.
         /// </summary>
         public Course? Course { get; set; }
     }

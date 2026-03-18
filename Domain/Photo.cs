@@ -1,27 +1,27 @@
 namespace Domain
 {
     /// <summary>
-    /// Represents a photo entity associated with a course.
+    /// Representa una entidad de foto asociada a un curso.
     /// </summary>
     public class Photo : BaseEntity
     {
         /// <summary>
-        /// Gets or sets the URL of the photo.
+        /// Obtiene o establece la URL de la foto.
         /// </summary>
         public string? Url { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the associated course.
+        /// Obtiene o establece el identificador del curso asociado.
         /// </summary>
         public Guid? CourseId { get; set; }
 
         /// <summary>
-        /// Gets or sets the course associated with this photo.
+        /// Obtiene o establece el curso asociado a esta foto.
         /// </summary>
         public Course? Course { get; set; }
 
         /// <summary>
-        /// Gets or sets the public identifier of the photo (e.g., for cloud storage).
+        /// Obtiene o establece el identificador público de la foto (por ejemplo, para almacenamiento en la nube).
         /// </summary>
         public string? PublicId { get; set; }
     }

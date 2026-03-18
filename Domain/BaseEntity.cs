@@ -1,13 +1,13 @@
 ﻿namespace Domain
 {
     /// <summary>
-    /// Represents the base class for all entities in the domain.
-    /// Provides a unique identifier for each entity.
+    /// Representa la clase base para todas las entidades del dominio.
+    /// Proporciona un identificador único para cada entidad.
     /// </summary>
     public abstract class BaseEntity
     {
         /// <summary>
-        /// Gets or sets the unique identifier for the entity.
+        /// Obtiene o establece el identificador único de la entidad.
         /// </summary>
         public Guid Id { get; set; }
     }

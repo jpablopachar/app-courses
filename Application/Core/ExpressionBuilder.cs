@@ -3,38 +3,38 @@ using System.Linq.Expressions;
 namespace Application.Core
 {
     /// <summary>
-    /// Provides utility methods for building and combining LINQ expressions.
+    /// Proporciona métodos utilitarios para construir y combinar expresiones LINQ.
     /// </summary>
     public static class ExpressionBuilder
     {
         /// <summary>
-        /// Creates a new expression that always evaluates to true.
+        /// Crea una nueva expresión que siempre evalúa a verdadero.
         /// </summary>
-        /// <typeparam name="T">The type of the parameter in the expression.</typeparam>
-        /// <returns>An expression that always returns true.</returns>
+        /// <typeparam name="T">El tipo del parámetro en la expresión.</typeparam>
+        /// <returns>Una expresión que siempre retorna verdadero.</returns>
         public static Expression<Func<T, bool>> New<T>()
         {
             return x => true;
         }
 
         /// <summary>
-        /// Returns the provided expression.
+        /// Retorna la expresión proporcionada.
         /// </summary>
-        /// <typeparam name="T">The type of the parameter in the expression.</typeparam>
-        /// <param name="expression">The expression to return.</param>
-        /// <returns>The provided expression.</returns>
+        /// <typeparam name="T">El tipo del parámetro en la expresión.</typeparam>
+        /// <param name="expression">La expresión a retornar.</param>
+        /// <returns>La expresión proporcionada.</returns>
         public static Expression<Func<T, bool>> New<T>(Expression<Func<T, bool>> expression)
         {
             return expression;
         }
 
         /// <summary>
-        /// Combines two expressions with a logical AND operation.
+        /// Combina dos expresiones con una operación lógica AND.
         /// </summary>
-        /// <typeparam name="T">The type of the parameter in the expressions.</typeparam>
-        /// <param name="left">The first expression.</param>
-        /// <param name="right">The second expression.</param>
-        /// <returns>An expression representing the logical AND of the two expressions.</returns>
+        /// <typeparam name="T">El tipo del parámetro en las expresiones.</typeparam>
+        /// <param name="left">La primera expresión.</param>
+        /// <param name="right">La segunda expresión.</param>
+        /// <returns>Una expresión que representa el AND lógico de las dos expresiones.</returns>
         public static Expression<Func<T, bool>> And<T>(
             this Expression<Func<T, bool>> left,
             Expression<Func<T, bool>> right)
@@ -46,12 +46,12 @@ namespace Application.Core
         }
 
         /// <summary>
-        /// Combines two expressions with a logical OR operation.
+        /// Combina dos expresiones con una operación lógica OR.
         /// </summary>
-        /// <typeparam name="T">The type of the parameter in the expressions.</typeparam>
-        /// <param name="left">The first expression.</param>
-        /// <param name="right">The second expression.</param>
-        /// <returns>An expression representing the logical OR of the two expressions.</returns>
+        /// <typeparam name="T">El tipo del parámetro en las expresiones.</typeparam>
+        /// <param name="left">La primera expresión.</param>
+        /// <param name="right">La segunda expresión.</param>
+        /// <returns>Una expresión que representa el OR lógico de las dos expresiones.</returns>
         public static Expression<Func<T, bool>> Or<T>(
             this Expression<Func<T, bool>> left,
             Expression<Func<T, bool>> right)
