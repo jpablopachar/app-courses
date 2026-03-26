@@ -20,19 +20,16 @@ namespace Persistence
         /// <returns>El IServiceCollection actualizado.</returns>
         public static IServiceCollection AddPersistence(
             this IServiceCollection services,
-            IConfiguration configuration,
-            bool isDevelopment = false
+            IConfiguration configuration
         )
         {
             services.AddDbContext<AppCoursesDbContext>(opt =>
             {
-                if (isDevelopment)
-                {
-                    opt.LogTo(Console.WriteLine, [
-                        DbLoggerCategory.Database.Command.Name
-                    ], LogLevel.Information).EnableSensitiveDataLogging();
-                    opt.UseSqlite(configuration.GetConnectionString(SqliteConnectionStringName));
-                }
+                opt.LogTo(Console.WriteLine, [
+                    DbLoggerCategory.Database.Command.Name
+                ], LogLevel.Information).EnableSensitiveDataLogging();
+
+                opt.UseSqlite(configuration.GetConnectionString(SqliteConnectionStringName));
             });
 
             return services;

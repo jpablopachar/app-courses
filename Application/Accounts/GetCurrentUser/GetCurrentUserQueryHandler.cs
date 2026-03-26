@@ -2,35 +2,38 @@ using Application.Common.Constants;
 using Application.Core;
 using Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Models;
 
 namespace Application.Accounts.GetCurrentUser
 {
     /// <summary>
-    /// Maneja la consulta para obtener la información del perfil del usuario actual.
+    /// Controlador que maneja las consultas para obtener el perfil del usuario actual.
     /// </summary>
     /// <remarks>
-    /// Utiliza IUserRepository para obtener datos del usuario e IProfileBuilderService para generar un perfil con token JWT.
+    /// Esta clase implementa el patrón Command Query Responsibility Segregation (CQRS) 
+    /// utilizando MediatR para gestionar solicitudes de obtención del perfil del usuario autenticado.
     /// </remarks>
-    /// <param name="userRepository">El repositorio de usuarios para acceder a los datos del usuario.</param>
-    /// <param name="profileBuilderService">El servicio generador de perfiles para crear perfiles de usuarios.</param>
-    public class GetCurrentUserQueryHandler(IUserRepository userRepository, IProfileBuilderService profileBuilderService) : IRequestHandler<GetCurrentUserQuery, Result<Profile>>
+    public class GetCurrentUserQueryHandler(
+        UserManager<AppUser> userManager,
+        IProfileBuilderService profileBuilderService)
+        : IRequestHandler<GetCurrentUserQuery, Result<Profile>>
     {
-        private readonly IUserRepository _userRepository = userRepository;
-        private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
-
         /// <summary>
-        /// Maneja la solicitud GetCurrentUserQuery y retorna el perfil del usuario.
+        /// Maneja la solicitud para obtener el perfil del usuario actual.
         /// </summary>
-        /// <param name="request">La consulta que contiene el correo del usuario.</param>
-        /// <param name="cancellationToken">Token de cancelación.</param>
-        /// <returns>Un Result que contiene el perfil del usuario o un mensaje de error.</returns>
+        /// <param name="request">La solicitud que contiene los datos del usuario a buscar.</param>
+        /// <param name="cancellationToken">Token de cancelación para la operación asincrónica.</param>
+        /// <returns>Un resultado que contiene el perfil del usuario si se encuentra, o un error si no existe.</returns>
         public async Task<Result<Profile>> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByEmailAsync(request.GetCurrentUserRequest.Email!, cancellationToken);
+            var user = await userManager.Users.FirstOrDefaultAsync(u => u.Email == request.GetCurrentUserRequest.Email,
+                cancellationToken);
 
             if (user is null) return Result<Profile>.Failure(ErrorMessages.UserNotFound);
 
-            var profile = await _profileBuilderService.BuildProfileAsync(user);
+            var profile = await profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
         }
