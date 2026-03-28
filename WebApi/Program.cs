@@ -1,34 +1,41 @@
-using Infrastructure;
+using Application;
 using Persistence;
+using WebApi.Extensions;
+using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddApplication();
+builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddIdentityService(builder.Configuration);
+
+builder.Services.AddPoliciesServices();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
 
-// Add Persistence layer
-builder.Services.AddPersistence(
-    builder.Configuration,
-    builder.Environment.IsDevelopment()
-);
+builder.Services.AddSwaggerDocumentation();
 
-// Add Infrastructure layer (repositories and external services)
-builder.Services.AddInfrastructure();
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddCors(o => o.AddPolicy("corsapp", builder =>
+{
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseSwaggerDocumentation();
+
+app.UseCors("corsapp");
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+await app.SeedDataAuthentication();
 
+app.MapControllers();
 app.Run();
