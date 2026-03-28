@@ -1,10 +1,10 @@
 using System.Linq.Expressions;
 using Application.Core;
-using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
+using Persistence;
 
 namespace Application.Qualifications.GetQualifications
 {
@@ -16,10 +16,8 @@ namespace Application.Qualifications.GetQualifications
     /// </remarks>
     /// <param name="repository">El repositorio de calificaciones.</param>
     /// <param name="mapper">La instancia de AutoMapper.</param>
-    public class GetQualificationsQueryHandler(IQualificationRepository repository, IMapper mapper) : IRequestHandler<GetQualificationsQuery, Result<PagedList<QualificationResponse>>>
+    public class GetQualificationsQueryHandler(AppCoursesDbContext context, IMapper mapper) : IRequestHandler<GetQualificationsQuery, Result<PagedList<QualificationResponse>>>
     {
-        private readonly IQualificationRepository _repository = repository;
-        private readonly IMapper _mapper = mapper;
 
         /// <inheritdoc/>
         public async Task<Result<PagedList<QualificationResponse>>> Handle(
@@ -31,14 +29,18 @@ namespace Application.Qualifications.GetQualifications
             var orderBySelector = BuildOrderBySelector(requestParams.OrderBy);
             var orderAscending = requestParams.OrderAsc ?? true;
 
-            var qualifications = _repository.GetQualifications(
-                predicate,
-                orderBySelector,
-                orderAscending
-            );
+            var qualifications = context.Qualifications!
+                .Where(predicate);
+
+            if (orderBySelector is not null)
+            {
+                qualifications = orderAscending
+                    ? qualifications.OrderBy(orderBySelector)
+                    : qualifications.OrderByDescending(orderBySelector);
+            }
 
             var qualificationResponses = qualifications
-                .ProjectTo<QualificationResponse>(_mapper.ConfigurationProvider)
+                .ProjectTo<QualificationResponse>(mapper.ConfigurationProvider)
                 .AsQueryable();
 
             var pagedList = await PagedList<QualificationResponse>.CreateAsync(

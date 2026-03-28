@@ -1,10 +1,10 @@
 using System.Linq.Expressions;
 using Application.Core;
-using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
+using Persistence;
 
 namespace Application.Instructors.GetInstructors
 {
@@ -16,11 +16,8 @@ namespace Application.Instructors.GetInstructors
     /// </remarks>
     /// <param name="repository">El repositorio de instructores.</param>
     /// <param name="mapper">La instancia de AutoMapper.</param>
-    public class GetInstructorsQueryHandler(IInstructorRepository repository, IMapper mapper) : IRequestHandler<GetInstructorsQuery, Result<PagedList<InstructorResponse>>>
+    public class GetInstructorsQueryHandler(AppCoursesDbContext context, IMapper mapper) : IRequestHandler<GetInstructorsQuery, Result<PagedList<InstructorResponse>>>
     {
-        private readonly IInstructorRepository _repository = repository;
-        private readonly IMapper _mapper = mapper;
-
         /// <inheritdoc/>
         public async Task<Result<PagedList<InstructorResponse>>> Handle(
             GetInstructorsQuery request,
@@ -31,14 +28,19 @@ namespace Application.Instructors.GetInstructors
             var orderBySelector = BuildOrderBySelector(requestParams.OrderBy);
             var orderAscending = requestParams.OrderAsc ?? true;
 
-            var instructors = _repository.GetInstructors(
-                predicate,
-                orderBySelector,
-                orderAscending
-            );
+            var instructors = context.Instructors!
+                .Where(predicate);
+
+            if (orderBySelector is not null)
+            {
+                instructors = orderAscending
+                    ? instructors.OrderBy(orderBySelector)
+                    : instructors.OrderByDescending(orderBySelector);
+            }
+
 
             var instructorResponses = instructors
-                .ProjectTo<InstructorResponse>(_mapper.ConfigurationProvider)
+                .ProjectTo<InstructorResponse>(mapper.ConfigurationProvider)
                 .AsQueryable();
 
             var pagedList = await PagedList<InstructorResponse>.CreateAsync(
