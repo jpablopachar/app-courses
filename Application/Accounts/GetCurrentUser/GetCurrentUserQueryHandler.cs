@@ -20,6 +20,9 @@ namespace Application.Accounts.GetCurrentUser
         IProfileBuilderService profileBuilderService)
         : IRequestHandler<GetCurrentUserQuery, Result<Profile>>
     {
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
+
         /// <summary>
         /// Maneja la solicitud para obtener el perfil del usuario actual.
         /// </summary>
@@ -28,12 +31,12 @@ namespace Application.Accounts.GetCurrentUser
         /// <returns>Un resultado que contiene el perfil del usuario si se encuentra, o un error si no existe.</returns>
         public async Task<Result<Profile>> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await userManager.Users.FirstOrDefaultAsync(u => u.Email == request.GetCurrentUserRequest.Email,
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == request.GetCurrentUserRequest.Email,
                 cancellationToken);
 
             if (user is null) return Result<Profile>.Failure(ErrorMessages.UserNotFound);
 
-            var profile = await profileBuilderService.BuildProfileAsync(user);
+            var profile = await _profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
         }

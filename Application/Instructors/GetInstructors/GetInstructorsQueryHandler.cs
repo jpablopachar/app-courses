@@ -18,6 +18,9 @@ namespace Application.Instructors.GetInstructors
     /// <param name="mapper">La instancia de AutoMapper.</param>
     public class GetInstructorsQueryHandler(AppCoursesDbContext context, IMapper mapper) : IRequestHandler<GetInstructorsQuery, Result<PagedList<InstructorResponse>>>
     {
+        private readonly AppCoursesDbContext _context = context;
+        private readonly IMapper _mapper = mapper;
+
         /// <inheritdoc/>
         public async Task<Result<PagedList<InstructorResponse>>> Handle(
             GetInstructorsQuery request,
@@ -28,7 +31,7 @@ namespace Application.Instructors.GetInstructors
             var orderBySelector = BuildOrderBySelector(requestParams.OrderBy);
             var orderAscending = requestParams.OrderAsc ?? true;
 
-            var instructors = context.Instructors!
+            var instructors = _context.Instructors!
                 .Where(predicate);
 
             if (orderBySelector is not null)
@@ -40,7 +43,7 @@ namespace Application.Instructors.GetInstructors
 
 
             var instructorResponses = instructors
-                .ProjectTo<InstructorResponse>(mapper.ConfigurationProvider)
+                .ProjectTo<InstructorResponse>(_mapper.ConfigurationProvider)
                 .AsQueryable();
 
             var pagedList = await PagedList<InstructorResponse>.CreateAsync(

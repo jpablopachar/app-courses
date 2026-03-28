@@ -18,6 +18,8 @@ namespace Application.Qualifications.GetQualifications
     /// <param name="mapper">La instancia de AutoMapper.</param>
     public class GetQualificationsQueryHandler(AppCoursesDbContext context, IMapper mapper) : IRequestHandler<GetQualificationsQuery, Result<PagedList<QualificationResponse>>>
     {
+        private readonly AppCoursesDbContext _context = context;
+        private readonly IMapper _mapper = mapper;
 
         /// <inheritdoc/>
         public async Task<Result<PagedList<QualificationResponse>>> Handle(
@@ -29,7 +31,7 @@ namespace Application.Qualifications.GetQualifications
             var orderBySelector = BuildOrderBySelector(requestParams.OrderBy);
             var orderAscending = requestParams.OrderAsc ?? true;
 
-            var qualifications = context.Qualifications!
+            var qualifications = _context.Qualifications!
                 .Where(predicate);
 
             if (orderBySelector is not null)
@@ -40,7 +42,7 @@ namespace Application.Qualifications.GetQualifications
             }
 
             var qualificationResponses = qualifications
-                .ProjectTo<QualificationResponse>(mapper.ConfigurationProvider)
+                .ProjectTo<QualificationResponse>(_mapper.ConfigurationProvider)
                 .AsQueryable();
 
             var pagedList = await PagedList<QualificationResponse>.CreateAsync(

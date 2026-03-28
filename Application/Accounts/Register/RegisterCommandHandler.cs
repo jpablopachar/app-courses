@@ -19,6 +19,9 @@ namespace Application.Accounts.Register
     public class RegisterCommandHandler(UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService)
         : IRequestHandler<RegisterCommand, Result<Profile>>
     {
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
+
         /// <summary>
         /// Maneja el registro de un nuevo usuario en la aplicación.
         /// </summary>
@@ -27,12 +30,12 @@ namespace Application.Accounts.Register
         /// <returns>Un resultado que contiene el perfil creado si el registro es exitoso, o un mensaje de error en caso contrario.</returns>
         public async Task<Result<Profile>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            if (await userManager.Users.AnyAsync(u => u.Email == request.RegisterRequest.Email, cancellationToken))
+            if (await _userManager.Users.AnyAsync(u => u.Email == request.RegisterRequest.Email, cancellationToken))
             {
                 return Result<Profile>.Failure(ErrorMessages.EmailTaken);
             }
 
-            if (await userManager.Users.AnyAsync(u => u.UserName == request.RegisterRequest.Username,
+            if (await _userManager.Users.AnyAsync(u => u.UserName == request.RegisterRequest.Username,
                     cancellationToken))
             {
                 return Result<Profile>.Failure(ErrorMessages.UsernameTaken);
@@ -47,14 +50,14 @@ namespace Application.Accounts.Register
                 Occupation = request.RegisterRequest.Degree
             };
 
-            var result = await userManager.CreateAsync(user, request.RegisterRequest.Password!);
+            var result = await _userManager.CreateAsync(user, request.RegisterRequest.Password!);
 
             if (!result.Succeeded)
             {
                 return Result<Profile>.Failure(ErrorMessages.RegistrationFailed);
             }
 
-            var profile = await profileBuilderService.BuildProfileAsync(user);
+            var profile = await _profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
         }

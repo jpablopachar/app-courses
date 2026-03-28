@@ -15,5 +15,9 @@
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Prices\" />
+    <Folder Include="Prices\GetPrices\" />
+  </ItemGroup>
 
 </Project>

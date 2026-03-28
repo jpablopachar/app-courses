@@ -16,6 +16,9 @@ namespace Application.Accounts.Login
     public class LoginCommandHandler(UserManager<AppUser> userManager, IProfileBuilderService profileBuilderService)
         : IRequestHandler<LoginCommand, Result<Profile>>
     {
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly IProfileBuilderService _profileBuilderService = profileBuilderService;
+
         /// <summary>
         /// Maneja la solicitud de inicio de sesión validando las credenciales del usuario.
         /// </summary>
@@ -24,16 +27,16 @@ namespace Application.Accounts.Login
         /// <returns>Resultado con el perfil del usuario si las credenciales son válidas; de lo contrario, un error.</returns>
         public async Task<Result<Profile>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await userManager.Users.FirstOrDefaultAsync(u => u.Email == request.LoginRequest.Email,
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == request.LoginRequest.Email,
                 cancellationToken);
 
             if (user is null) return Result<Profile>.Failure(ErrorMessages.UserNotFound);
 
-            var passwordValid = await userManager.CheckPasswordAsync(user, request.LoginRequest.Password!);
+            var passwordValid = await _userManager.CheckPasswordAsync(user, request.LoginRequest.Password!);
 
             if (!passwordValid) return Result<Profile>.Failure(ErrorMessages.InvalidCredentials);
 
-            var profile = await profileBuilderService.BuildProfileAsync(user);
+            var profile = await _profileBuilderService.BuildProfileAsync(user);
 
             return Result<Profile>.Success(profile);
         }
