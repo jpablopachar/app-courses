@@ -14,6 +14,6 @@ namespace Application.Instructors.GetInstructors
         /// <summary>
         /// Los parámetros de solicitud para obtener instructores, incluyendo opciones de paginación y filtrado.
         /// </summary>
-        public GetInstructorsRequest? GetInstructorsRequest { get; init; }
+        public GetInstructorsRequest? InstructorRequest { get; init; }
     }
 }

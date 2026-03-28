@@ -26,7 +26,7 @@ namespace Application.Instructors.GetInstructors
             GetInstructorsQuery request,
             CancellationToken cancellationToken)
         {
-            var requestParams = request.GetInstructorsRequest!;
+            var requestParams = request.InstructorRequest!;
             var predicate = BuildFilterPredicate(requestParams);
             var orderBySelector = BuildOrderBySelector(requestParams.OrderBy);
             var orderAscending = requestParams.OrderAsc ?? true;
