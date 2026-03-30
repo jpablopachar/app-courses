@@ -53,7 +53,8 @@ namespace Application.Core
             IQueryable<T> source,
             int pageNumber,
             int pageSize
-        )
+,
+            CancellationToken cancellationToken)
         {
             var count = await source.CountAsync();
             var items = await source.Skip((pageNumber - 1) * pageSize)

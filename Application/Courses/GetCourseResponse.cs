@@ -3,12 +3,12 @@ using Application.Photos;
 using Application.Prices.GetPrices;
 using Application.Qualifications.GetQualifications;
 
-namespace Application.Courses.GetCourse
+namespace Application.Courses
 {
     /// <summary>
     /// Representa la respuesta con la información de un curso.
     /// </summary>
-    public record GetCourseResponse(
+    public record CourseResponse(
         /// <summary>
         /// Identificador único del curso.
         /// </summary>

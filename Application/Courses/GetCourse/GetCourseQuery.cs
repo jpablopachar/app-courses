@@ -6,7 +6,7 @@ namespace Application.Courses.GetCourse
     /// <summary>
     /// Query para obtener un curso por su identificador único.
     /// </summary>
-    public record GetCourseQuery : IRequest<Result<GetCourseResponse>>
+    public record GetCourseQuery : IRequest<Result<CourseResponse>>
     {
         /// <summary>
         /// Identificador único del curso a recuperar.
