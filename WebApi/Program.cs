@@ -1,4 +1,7 @@
 using Application;
+using Application.Interfaces;
+using Infrastructure.Photos;
+using Infrastructure.Reports;
 using Persistence;
 using WebApi.Extensions;
 using WebApi.Middlewares;
@@ -11,13 +14,15 @@ builder.Services.AddIdentityService(builder.Configuration);
 
 builder.Services.AddPoliciesServices();
 
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(nameof(CloudinarySettings)));
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped(typeof(IReportService<>), typeof(ReportService<>));
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
 
 builder.Services.AddSwaggerDocumentation();
-
-builder.Services.AddOpenApi();
 
 builder.Services.AddCors(o => o.AddPolicy("corsapp", builder =>
 {
