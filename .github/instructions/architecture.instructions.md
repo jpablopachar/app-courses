@@ -77,13 +77,20 @@ Application/
 │   ├── ITokenService.cs
 │   ├── IPhotoService.cs
 │   ├── IUserAccessor.cs
-│   └── IProfileBuilderService.cs
+│   ├── IProfileBuilderService.cs
+│   └── IReportService.cs       ← generic CSV report generation: GetCsvReportAsync(List<T>)
 ├── Accounts/
 │   ├── GetCurrentUser/
 │   ├── Login/
 │   └── Register/
 ├── Courses/
-│   └── CourseCreate/
+│   ├── CourseCreate/
+│   ├── CourseDelete/
+│   ├── CourseUpdate/
+│   ├── CourseExcelReport/
+│   ├── GetCourse/
+│   ├── GetCourses/
+│   └── GetCourseResponse.cs    ← shared CourseResponse DTO (used by GetCourse and GetCourses)
 ├── Instructors/
 │   └── GetInstructors/
 ├── Prices/
@@ -97,7 +104,7 @@ Application/
 
 Every feature is expressed as either a **Command** (mutating) or a **Query** (read-only).
 
-**Command structure** — one folder per operation:
+**Command structure** — one folder per operation (with request DTO):
 ```
 Courses/CourseCreate/
 ├── CourseCreateCommand.cs         ← record : IRequest<Result<T>>, ICommandBase
@@ -107,14 +114,28 @@ Courses/CourseCreate/
 └── CourseCreateCommandValidator.cs← AbstractValidator<CourseCreateCommand>, wraps the above
 ```
 
+Commands with no separate request DTO (e.g., `CourseDeleteCommand` takes only a `Guid?`) use a **single validator** directly on the command — the two-file split is omitted:
+```
+Courses/CourseDelete/
+├── CourseDeleteCommand.cs         ← record(Guid? CourseId) : IRequest<Result<Unit>>, ICommandBase
+├── CourseDeleteCommandHandler.cs
+└── CourseDeleteCommandValidator.cs← AbstractValidator<CourseDeleteCommand> (validates fields directly)
+```
+
 **Query structure** — same folder layout; queries may omit the validator pair if they have no mandatory input.
+
+Queries that produce a file or stream may return a raw type instead of `Result<T>` (e.g., `CourseExcelReportQuery : IRequest<MemoryStream>`). The controller then calls `.ToArray()` or similar on the result directly rather than checking `IsSuccess`.
+
+**Shared response DTOs** — when the same DTO is returned by multiple queries in a resource folder, place it at the resource level rather than inside a feature subfolder (e.g., `Application/Courses/GetCourseResponse.cs` defines `CourseResponse`, shared by `GetCourseQuery` and `GetCoursesQuery`).
 
 ### Two-layer validation pattern
 
-Every command uses two validator classes:
+Commands that wrap a request DTO use two validator classes:
 
 1. **Request validator** (`CourseCreateValidator`) — validates the raw DTO fields.
 2. **Command validator** (`CourseCreateCommandValidator`) — wraps the request validator via `SetValidator()` so `ValidationBehavior` can discover it.
+
+Commands with no request DTO use a single validator class that validates command fields directly.
 
 `ValidationBehavior` runs automatically before every handler. Never validate manually inside a handler.
 
@@ -269,6 +290,21 @@ When adding a new service: define the interface in `Application/Interfaces/`, im
 
 Authorization is **claims-based on top of roles**. The claim type is `CustomClaims.POLICIES`; each claim value is a policy name from `PolicyMaster`.
 
+### Current policies (`Domain/PolicyMaster.cs`)
+
+| Constant | Purpose |
+|---|---|
+| `COURSE_READ` | Read access to courses and reports |
+| `COURSE_WRITE` | Create a new course |
+| `COURSE_UPDATE` | Update an existing course |
+| `COURSE_DELETE` | Delete a course |
+| `INSTRUCTOR_READ` | Read access to instructors |
+| `INSTRUCTOR_CREATE` | Create an instructor |
+| `INSTRUCTOR_UPDATE` | Update an instructor |
+| `COMMENT_READ` | Read comments |
+| `COMMENT_CREATE` | Create a comment |
+| `COMMENT_DELETE` | Delete a comment |
+
 ### How it works end-to-end
 
 1. Client calls `POST /api/account/login`.
@@ -309,7 +345,7 @@ HTTP Response
 | Role or policy constant | `Domain/CustomRoles.cs` or `Domain/PolicyMaster.cs` |
 | Command or query record | `Application/{Resource}/{Feature}/` |
 | Input DTO (request) | Same folder as the command/query |
-| Output DTO (response/dto) | Same folder as the query handler |
+| Output DTO (response/dto) | Same folder as the query handler; if shared across multiple queries in a resource, place at the resource level (e.g., `Application/Courses/GetCourseResponse.cs`) |
 | MediatR handler | Same folder as the command/query |
 | FluentValidation validator | Same folder as the command/query |
 | AutoMapper mapping | `Application/Core/MappingProfile.cs` |

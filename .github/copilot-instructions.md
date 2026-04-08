@@ -16,7 +16,7 @@ Infrastructure / Persistence → Domain
 
 - **Domain** — entities, value types, constants. No external dependencies.
 - **Application** — MediatR handlers, FluentValidation validators, AutoMapper profiles, interfaces (contracts), DTOs. No infrastructure imports.
-- **Infrastructure** — implementations of Application interfaces: `TokenService`, `PhotoService`, `ProfileBuilderService`.
+- **Infrastructure** — implementations of Application interfaces: `TokenService`, `PhotoService`, `ProfileBuilderService`, `ReportService`.
 - **Persistence** — `AppCoursesDbContext`, EF Core entity configurations, migrations, data seeding.
 - **WebApi** — controllers, middleware, `Program.cs`, DI extension methods.
 
@@ -31,12 +31,27 @@ Every feature lives in `Application/{Resource}/` as a subfolder. Each feature ha
 ```
 Application/
   Courses/
-    CourseCreate/
-      CourseCreateCommand.cs      ← IRequest<Result<Guid>>
-      CourseCreateRequest.cs      ← raw input DTO
+    CourseCreate/                          ← command with a request DTO
+      CourseCreateCommand.cs               ← IRequest<Result<Guid>>, ICommandBase
+      CourseCreateRequest.cs               ← raw input DTO
       CourseCreateCommandHandler.cs
-      CourseCreateValidator.cs    ← validates CourseCreateRequest
-      CourseCreateCommandValidator.cs  ← wraps CourseCreateValidator via SetValidator()
+      CourseCreateValidator.cs             ← AbstractValidator<CourseCreateRequest>
+      CourseCreateCommandValidator.cs      ← wraps CourseCreateValidator via SetValidator()
+    CourseDelete/                          ← command with no request DTO
+      CourseDeleteCommand.cs               ← record(Guid? CourseId) : IRequest<Result<Unit>>, ICommandBase
+      CourseDeleteCommandHandler.cs
+      CourseDeleteCommandValidator.cs      ← AbstractValidator<CourseDeleteCommand> (validates fields directly)
+    CourseExcelReport/                     ← query returning a raw stream, not Result<T>
+      CourseExcelReportQuery.cs            ← IRequest<MemoryStream>
+      CourseExcelReportQueryHandler.cs
+    GetCourse/
+      GetCourseQuery.cs                    ← IRequest<Result<CourseResponse>>
+      GetCourseQueryHandler.cs
+    GetCourses/
+      GetCoursesQuery.cs                   ← IRequest<Result<PagedList<CourseResponse>>>
+      GetCoursesQueryHandler.cs
+      GetCoursesRequest.cs                 ← extends PagingParams, adds Title/Description filters
+    GetCourseResponse.cs                   ← shared CourseResponse DTO (resource-level, not in a subfolder)
 ```
 
 ### Command skeleton
@@ -96,7 +111,7 @@ public class GetCoursesQueryHandler : IRequestHandler<GetCoursesQuery, Result<Pa
 
 ### Two-layer validation pattern
 
-Every command or query uses **two** validator classes:
+Commands that wrap a request DTO use **two** validator classes:
 
 ```csharp
 // 1. Validates the raw request DTO fields
@@ -113,7 +128,19 @@ public class CourseCreateCommandValidator : AbstractValidator<CourseCreateComman
 {
     public CourseCreateCommandValidator()
     {
-        RuleFor(x => x.Request).SetValidator(new CourseCreateValidator());
+        RuleFor(x => x.CourseCreateRequest).SetValidator(new CourseCreateValidator());
+    }
+}
+```
+
+Commands with **no request DTO** (e.g., `CourseDeleteCommand(Guid? CourseId)`) use a **single validator** that validates the command fields directly:
+
+```csharp
+public class CourseDeleteCommandValidator : AbstractValidator<CourseDeleteCommand>
+{
+    public CourseDeleteCommandValidator()
+    {
+        RuleFor(c => c.CourseId).NotNull().WithMessage("CourseId is required.");
     }
 }
 ```
@@ -222,7 +249,7 @@ query = query.Where(predicate);
 Policies are defined in `Domain/PolicyMaster.cs` and registered in `WebApi/Extensions/PoliciesConfiguration.cs`.  
 Each policy checks for a specific claim value in the `POLICIES` claim type.
 
-Available policies: `COURSE_READ`, `COURSE_WRITE`, `COURSE_DELETE`, `INSTRUCTOR_READ`, `INSTRUCTOR_WRITE`, `INSTRUCTOR_DELETE`, `PRICE_READ`, `PRICE_WRITE`, `PRICE_DELETE`, `QUALIFICATION_READ`.
+Available policies (defined in `Domain/PolicyMaster.cs`): `COURSE_READ`, `COURSE_WRITE`, `COURSE_UPDATE`, `COURSE_DELETE`, `INSTRUCTOR_READ`, `INSTRUCTOR_CREATE`, `INSTRUCTOR_UPDATE`, `COMMENT_READ`, `COMMENT_CREATE`, `COMMENT_DELETE`.
 
 When adding a new protected endpoint:
 1. Add a constant to `PolicyMaster`.
@@ -298,7 +325,7 @@ When adding a new service:
 | Artifact | Pattern | Example |
 |---|---|---|
 | Command | `{Verb}{Noun}Command` | `CourseCreateCommand` |
-| Query | `Get{Plural}Query` | `GetCoursesQuery` |
+| Query | `Get{Noun}Query` | `GetCoursesQuery`, `GetCourseQuery`, `CourseExcelReportQuery` |
 | Handler | `{CommandOrQuery}Handler` | `CourseCreateCommandHandler` |
 | Request DTO | `{Verb}Request` | `CourseCreateRequest` |
 | Response DTO | `{Noun}Dto` / `{Noun}Response` | `CourseDto`, `InstructorResponse` |
